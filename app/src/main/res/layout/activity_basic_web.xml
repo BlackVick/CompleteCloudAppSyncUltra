@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:aapt="http://schemas.android.com/aapt"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:keepScreenOn="true"
+                android:layout_height="match_parent"
+                android:animateLayoutChanges="true"
+                android:background="@color/black">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="FloatingActionButton">
+
+        <WebView
+                android:id="@+id/webView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:max="3"
+            android:progress="100" />
+
+    <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/online"
+            android:layout_margin="2dp"
+            android:id="@+id/connectionIndicator"
+            android:adjustViewBounds="true"/>
+
+    <ProgressBar
+            android:id="@+id/syncProgressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:theme="@style/SyncProgressTheme"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:max="3"
+            android:progress="0"
+            android:padding="0dp"
+            android:layout_marginTop="0dp"/>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:background="@color/transparentBlack"
+            android:id="@+id/testLayout"
+            android:animateLayoutChanges="true">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="start">
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="4dp"
+                    android:gravity="center">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Status"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:layout_margin="2dp"/>
+
+                <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:src="@drawable/online"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:id="@+id/testOnlineIndicator"
+                        android:adjustViewBounds="true"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:gravity="center">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Timer"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:layout_margin="2dp"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="09:27"
+                        android:textStyle="normal"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:layout_margin="2dp"
+                        android:id="@+id/countDownTimer"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:gravity="center">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Files"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:layout_margin="2dp"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="3 / 17"
+                        android:textStyle="normal"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:layout_margin="2dp"
+                        android:id="@+id/filesCount"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:gravity="center">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Progress"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:layout_margin="2dp"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="53 %"
+                        android:textStyle="normal"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:layout_margin="2dp"
+                        android:id="@+id/syncProgress"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:gravity="center">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Changed"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:layout_margin="2dp"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="4"
+                        android:textStyle="normal"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:layout_margin="2dp"
+                        android:id="@+id/filesChanged"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:gravity="center">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="S-Start"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:layout_margin="2dp"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="4"
+                        android:textStyle="normal"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:layout_margin="2dp"
+                        android:id="@+id/scheduleStart"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:gravity="center">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="S-End"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:layout_margin="2dp"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="4"
+                        android:textStyle="normal"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:layout_margin="2dp"
+                        android:id="@+id/scheduleEnd"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

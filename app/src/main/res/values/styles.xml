@@ -1,0 +1,168 @@
+<resources>
+    <!-- ultra light theme. -->
+    <style name="UltraLightTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">?attr/backgroundColor</item>
+        <item name="backgroundColor">@color/white</item>
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="textColor">@color/black</item>
+        <item name="cardTextColor">@color/black</item>
+        <item name="textTitleColor">@color/colorPrimary</item>
+        <item name="ringStroke">@color/colorPrimary</item>
+        <item name="tabIndicators">@color/black</item>
+        <item name="tabText">@color/black</item>
+        <item name="tabSelected">@color/colorAccent</item>
+        <item name="tintColor">@color/black</item>
+        <item name="buttonColor">@color/buttons</item>
+        <item name="switchColor">@color/colorAccent</item>
+        <item name="roundBackground">@color/white</item>
+        <item name="buttonTextColor">@color/white</item>
+        <item name="dropdownTextColor">@color/black</item>
+        <item name="customTabBack">@color/transparentDeepBlack</item>
+        <item name="timePickerBack">@color/white</item>
+        <item name="scheduleTimeHead">@color/grey</item>
+        <item name="scheduleTimeBold">@color/black</item>
+        <item name="scheduleDayBack">@color/dayBackGrey</item>
+        <item name="scheduleDayText">@color/white</item>
+        <item name="ringBackground">@color/transparentRingWhite</item>
+    </style>
+
+    <!-- ultra dark theme. -->
+    <style name="UltraDarkTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">?attr/backgroundColor</item>
+        <item name="backgroundColor">@color/offBlack</item>
+        <item name="cardBackgroundColor">@color/transparentBlue</item>
+        <item name="textColor">@color/white</item>
+        <item name="cardTextColor">@color/white</item>
+        <item name="textTitleColor">@color/colorPrimary</item>
+        <item name="ringStroke">@color/colorPrimary</item>
+        <item name="tabIndicators">@color/colorPrimary</item>
+        <item name="tabText">@color/colorPrimary</item>
+        <item name="tabSelected">@color/white</item>
+        <item name="tintColor">@color/white</item>
+        <item name="buttonColor">@color/buttons</item>
+        <item name="switchColor">@color/white</item>
+        <item name="roundBackground">@color/offBlack</item>
+        <item name="buttonTextColor">@color/dullWhite</item>
+        <item name="dropdownTextColor">@color/white</item>
+        <item name="customTabBack">@color/colorPrimaryDark</item>
+        <item name="timePickerBack">@color/veryDullWhite</item>
+        <item name="scheduleTimeHead">@color/dullWhite</item>
+        <item name="scheduleTimeBold">@color/colorPrimaryDark</item>
+        <item name="scheduleDayBack">@color/dullWhite</item>
+        <item name="scheduleDayText">@color/black</item>
+        <item name="ringBackground">@color/transparentRingBlack</item>
+    </style>
+
+    <!--  basic light theme  -->
+    <style name="BasicLightTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorBasicPrimary</item>
+        <item name="colorPrimaryDark">@color/colorBasicPrimaryDark</item>
+        <item name="colorAccent">@color/colorBasicAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">?attr/backgroundColor</item>
+        <item name="backgroundColor">@color/white</item>
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="textColor">@color/black</item>
+        <item name="cardTextColor">@color/black</item>
+        <item name="textTitleColor">@color/colorBasicPrimary</item>
+        <item name="ringStroke">@color/colorBasicPrimary</item>
+        <item name="tabIndicators">@color/black</item>
+        <item name="tabText">@color/black</item>
+        <item name="tabSelected">@color/colorBasicAccent</item>
+        <item name="tintColor">@color/black</item>
+        <item name="buttonColor">@color/buttonsBasic</item>
+        <item name="switchColor">@color/colorBasicAccent</item>
+        <item name="roundBackground">@color/white</item>
+        <item name="buttonTextColor">@color/white</item>
+        <item name="dropdownTextColor">@color/black</item>
+        <item name="customTabBack">@color/transparentDeepBlack</item>
+        <item name="timePickerBack">@color/white</item>
+        <item name="scheduleTimeHead">@color/grey</item>
+        <item name="scheduleTimeBold">@color/black</item>
+        <item name="scheduleDayBack">@color/dayBackGrey</item>
+        <item name="scheduleDayText">@color/white</item>
+        <item name="ringBackground">@color/transparentRingWhite</item>
+    </style>
+
+    <!-- basic dark theme. -->
+    <style name="BasicDarkTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorBasicPrimary</item>
+        <item name="colorPrimaryDark">@color/colorBasicPrimaryDark</item>
+        <item name="colorAccent">@color/colorBasicPrimary</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">?attr/backgroundColor</item>
+        <item name="backgroundColor">@color/offBlack</item>
+        <item name="cardBackgroundColor">@color/transparentBasicBlue</item>
+        <item name="textColor">@color/white</item>
+        <item name="cardTextColor">@color/white</item>
+        <item name="textTitleColor">@color/colorBasicPrimary</item>
+        <item name="ringStroke">@color/colorBasicPrimary</item>
+        <item name="tabIndicators">@color/colorBasicPrimary</item>
+        <item name="tabText">@color/colorBasicPrimary</item>
+        <item name="tabSelected">@color/white</item>
+        <item name="tintColor">@color/white</item>
+        <item name="buttonColor">@color/buttonsBasic</item>
+        <item name="switchColor">@color/white</item>
+        <item name="roundBackground">@color/offBlack</item>
+        <item name="buttonTextColor">@color/dullWhite</item>
+        <item name="dropdownTextColor">@color/white</item>
+        <item name="customTabBack">@color/colorBasicPrimaryDark</item>
+        <item name="timePickerBack">@color/veryDullWhite</item>
+        <item name="scheduleTimeHead">@color/dullWhite</item>
+        <item name="scheduleTimeBold">@color/colorBasicPrimaryDark</item>
+        <item name="scheduleDayBack">@color/dullWhite</item>
+        <item name="scheduleDayText">@color/black</item>
+        <item name="ringBackground">@color/transparentRingBlack</item>
+    </style>
+
+    <style name="myTimePickerStyle" parent="@android:style/Widget.Material.Light.TimePicker">
+        <item name="android:numbersTextColor">?attr/textColor</item>
+        <item name="android:numbersBackgroundColor">?attr/timePickerBack</item>
+        <item name="android:numbersSelectorColor">#000000</item>
+        <item name="android:headerBackground">@color/dullWhite</item>
+    </style>
+
+    <!--  LOADING DIALOG THEME  -->
+    <style name="LoadingDialogTheme" parent="Theme.AppCompat.Dialog">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!--  DIALOG APPEARANCE THEME  -->
+    <style name="PauseDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/scale_in</item>
+        <item name="android:windowExitAnimation">@anim/scale_out</item>
+    </style>
+
+    <!--  PROGRESS THEME -->
+    <style name="ProgressTheme" parent="UltraLightTheme">
+        <item name="colorAccent">@color/white</item>
+    </style>
+
+    <!--  SYNC PROGRESS THEME -->
+    <style name="SyncProgressTheme" parent="UltraLightTheme">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
+</resources>

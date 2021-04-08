@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:maxWidth="200dp"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:background="@drawable/white_round_back">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Restore Settings"
+            android:textColor="?attr/textColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="You are about to restore all settings to default. Are you sure you want to proceed?"
+            android:layout_margin="20dp"
+            android:textSize="15sp"
+            android:textColor="?attr/textColor"
+            android:id="@+id/appPassword"
+            android:gravity="center"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="10dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:background="@drawable/exit_button"
+                android:text="CANCEL"
+                android:textSize="12sp"
+                android:textColor="@color/white"
+                android:layout_marginStart="15dp"
+                android:id="@+id/cancelReset"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:background="@drawable/buttons"
+                android:text="RESTORE"
+                android:textSize="12sp"
+                android:textColor="@color/white"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:id="@+id/acceptReset"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.cloudappsync.ultra">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
+
+    <application
+            android:name=".Utilities.AppClass"
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:requestLegacyExternalStorage="true"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:usesCleartextTraffic="true"
+            tools:ignore="UnusedAttribute"
+            tools:targetApi="m">
+
+
+        <service
+                android:name=".Services.BubbleService"
+                android:enabled="true"
+                android:exported="false"/>
+
+        <receiver
+                android:name=".Receivers.BootReceiver"
+                android:enabled="true"
+                android:exported="true">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
+
+        <activity
+                android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+                android:configChanges="orientation"
+                android:launchMode="singleTop"
+                android:screenOrientation="fullSensor"
+                android:theme="@style/Base.Theme.AppCompat"
+                tools:ignore="LockedOrientationActivity"/>
+
+        <receiver
+                android:name=".Receivers.ScheduleAlarmReceiver"
+                android:enabled="true"
+                android:exported="true">
+            <intent-filter android:priority="999">
+                <action android:name="Common.START_REDIRECT"/>
+            </intent-filter>
+        </receiver>
+
+        <service
+                android:name=".Services.SaveWebService"
+                android:enabled="true"
+                android:exported="false"/>
+
+        <activity
+                android:name=".Splash"
+                android:configChanges="keyboard|keyboardHidden|orientation"
+                android:launchMode="singleTop"
+                android:screenOrientation="fullSensor"
+                android:theme="@style/BasicLightTheme"
+                android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+                android:name=".Ultra.SignIn"
+                android:configChanges="keyboard|keyboardHidden|orientation"
+                android:launchMode="singleTop"
+                android:screenOrientation="fullSensor"
+                android:windowSoftInputMode="adjustResize"/>
+        <activity
+                android:name=".Home"
+                android:configChanges="orientation"
+                android:launchMode="singleTop"
+                android:screenOrientation="fullSensor"/>
+        <activity
+                android:name=".Ultra.WebActivity"
+                android:configChanges="orientation|screenSize"
+                android:launchMode="singleTop"
+                android:screenOrientation="fullSensor"/>
+        <activity
+                android:name=".AddSchedule"
+                android:configChanges="keyboard|keyboardHidden|orientation"
+                android:launchMode="singleTop"
+                android:screenOrientation="fullSensor"
+                android:windowSoftInputMode="adjustResize"/>
+        <activity
+                android:name=".AllLocals"
+                android:configChanges="orientation|screenSize"
+                android:launchMode="singleTop"
+                android:screenOrientation="fullSensor"/>
+        <activity
+                android:name=".AllSchedules"
+                android:configChanges="orientation|screenSize"
+                android:launchMode="singleTop"
+                android:screenOrientation="fullSensor"/>
+        <activity
+                android:name=".Ultra.Setting"
+                android:configChanges="orientation"
+                android:launchMode="singleTop"
+                android:screenOrientation="fullSensor"/>
+        <activity
+                android:name=".PasswordCheckPage"
+                android:configChanges="orientation"
+                android:launchMode="singleTop"
+                android:screenOrientation="fullSensor"/>
+        <activity
+                android:name=".SyncActivity"
+                android:configChanges="orientation|screenSize"
+                android:launchMode="singleTop"
+                android:screenOrientation="fullSensor"/>
+
+        <activity
+                android:name=".Basic.BasicSetting"
+                android:configChanges="keyboard|keyboardHidden|orientation"
+                android:launchMode="singleTop"
+                android:screenOrientation="fullSensor"
+                android:windowSoftInputMode="adjustResize"/>
+
+        <activity android:name=".Basic.BasicWebActivity"
+                  android:configChanges="orientation|screenSize"
+                  android:launchMode="singleTop"
+                  android:screenOrientation="fullSensor"/>
+
+
+        <activity android:name=".Basic.SignInBasic"
+                  android:configChanges="keyboard|keyboardHidden|orientation"
+                  android:launchMode="singleTop"
+                  android:screenOrientation="fullSensor"
+                  android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".LicenceVerify"
+                  android:configChanges="orientation|screenSize"
+                  android:launchMode="singleTop"
+                  android:screenOrientation="fullSensor"
+                    android:theme="@style/BasicLightTheme"/>
+
+        <receiver android:name=".Receivers.NetworkReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+                android:name=".Receivers.TimedRedirectReceiver"
+                android:enabled="true"
+                android:exported="true"/>
+
+        <provider
+                android:name=".Utilities.GenericFileProvider"
+                android:authorities="${applicationId}.provider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+            <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/provider_paths"/>
+        </provider>
+    </application>
+
+</manifest>

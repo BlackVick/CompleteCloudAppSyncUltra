@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/loading_background"
+    android:maxWidth="200dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="15dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/avi"
+                style="@style/AVLoadingIndicatorView"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:visibility="visible"
+                app:indicatorColor="@color/colorPrimaryDark"
+                app:indicatorName="LineSpinFadeLoaderIndicator"
+                android:layout_gravity="center"
+                android:layout_marginEnd="15dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Synchronizing . . ."
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:textColor="@color/colorPrimaryDark"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="100%"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:textSize="13sp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="end"
+            android:id="@+id/zipDownloadProgress"/>
+
+        <ProgressBar
+            android:id="@+id/zipProgress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:max="100"
+            android:progressDrawable="@drawable/progress_drawable"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="20dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="@drawable/exit_button"
+                android:text="CANCEL"
+                android:textSize="12sp"
+                android:textColor="@color/white"
+                android:layout_marginStart="15dp"
+                android:id="@+id/cancelZipSync"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="@drawable/buttons"
+                android:text="RETRY"
+                android:textSize="12sp"
+                android:textColor="@color/white"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:id="@+id/retryZipSync"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

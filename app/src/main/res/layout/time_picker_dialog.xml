@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/picker_round_back">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Pick Time"
+        android:textSize="16sp"
+        android:textColor="@color/boldTextColor"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"/>
+    
+    <TimePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:timePickerMode="spinner"
+        android:layout_margin="10dp"
+        android:layout_centerInParent="true"
+        android:numbersTextColor="@color/white"
+        android:numbersSelectorColor="@color/green"
+        android:outlineAmbientShadowColor="@color/green"
+        android:numbersBackgroundColor="@color/green"
+        android:numbersInnerTextColor="@color/green"
+        android:id="@+id/timePicker"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/timePicker"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="end">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:background="@drawable/buttons"
+            android:text="Cancel"
+            android:textSize="13sp"
+            android:textColor="@color/white"
+            android:id="@+id/cancelBtn"
+            android:layout_marginEnd="10dp"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:background="@drawable/buttons"
+            android:text="Set"
+            android:textSize="13sp"
+            android:textColor="@color/white"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:id="@+id/setBtn"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

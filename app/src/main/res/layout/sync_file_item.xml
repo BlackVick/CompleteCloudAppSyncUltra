@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10"
+    android:layout_marginBottom="6dp">
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="10"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="10dp">
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="index.html"
+                    android:textStyle="bold"
+                    android:textSize="17sp"
+                    android:textColor="?attr/textColor"
+                    android:layout_margin="3dp"
+                    android:id="@+id/fileName"/>
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="hq/uba2/LD_PQ_568/App/Application/index.html"
+                    android:textStyle="normal"
+                    android:textSize="14sp"
+                    android:textColor="?attr/textColor"
+                    android:layout_margin="3dp"
+                    android:id="@+id/filePath"/>
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp">
+
+                <ProgressBar
+                        android:id="@+id/fileDownloadProgress"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_centerInParent="true"
+                        android:max="100"
+                        android:progressDrawable="@drawable/progress_drawable"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="78%"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_centerInParent="true"
+                        android:id="@+id/fileProgressText"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View android:layout_width="250dp" android:layout_height="2dp"
+          android:layout_alignParentBottom="true"
+          android:background="@color/fadeGrey"
+          android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>

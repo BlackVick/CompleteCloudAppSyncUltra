@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ds">
+        <attr name="backgroundColor" format="color"/>
+        <attr name="cardBackgroundColor" format="color"/>
+        <attr name="textColor" format="color"/>
+        <attr name="textTitleColor" format="color"/>
+        <attr name="tabIndicators" format="color"/>
+        <attr name="tabText" format="color"/>
+        <attr name="tabSelected" format="color"/>
+        <attr name="tintColor" format="color"/>
+        <attr name="buttonColor" format="color"/>
+        <attr name="switchColor" format="color"/>
+        <attr name="roundBackground" format="color"/>
+        <attr name="buttonTextColor" format="color"/>
+        <attr name="iconTint" format="color"/>
+        <attr name="dropdownTextColor" format="color"/>
+        <attr name="cardTextColor" format="color"/>
+        <attr name="customTabBack" format="color"/>
+        <attr name="timePickerBack" format="color"/>
+        <attr name="scheduleTimeHead" format="color"/>
+        <attr name="scheduleTimeBold" format="color"/>
+        <attr name="scheduleDayBack" format="color"/>
+        <attr name="scheduleDayText" format="color"/>
+        <attr name="ringBackground" format="color"/>
+        <attr name="ringStroke" format="color"/>
+    </declare-styleable>
+</resources>

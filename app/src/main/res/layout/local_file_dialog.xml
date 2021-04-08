@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/picker_round_back">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Local File List"
+        android:textSize="16sp"
+        android:textColor="@color/boldTextColor"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"/>
+    
+    <Spinner
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="25dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/edittext_ring"
+        android:id="@+id/localSpinner"/>
+
+</RelativeLayout>

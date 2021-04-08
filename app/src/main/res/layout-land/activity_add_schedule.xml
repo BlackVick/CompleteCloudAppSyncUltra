@@ -1,0 +1,604 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddSchedule"
+    android:animateLayoutChanges="true"
+    android:keepScreenOn="true">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:id="@+id/backgroundImage"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_back"
+            android:layout_centerVertical="true"
+            android:id="@+id/backButton"
+            android:adjustViewBounds="true"
+            app:tint="?attr/tintColor" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/backButton"
+            android:layout_marginStart="10dp"
+            android:text="Add Scheduled Redirects"
+            android:textSize="15sp"
+            android:textColor="?attr/textColor"
+            android:textStyle="bold"/>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="55dp"
+        android:layout_above="@+id/addScheduleBtn"
+        android:scrollbars="none"
+        android:layout_marginBottom="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="Link Location"
+                android:textColor="?attr/scheduleTimeHead"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:layout_gravity="center"/>
+
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:weightSum="10"
+                android:layout_margin="5dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="7"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/locationIndicator"
+                    tools:text="Online"
+                    android:textSize="15sp"
+                    android:textColor="?attr/textColor"
+                    android:layout_gravity="center"/>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/locationSwitch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="3" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="Enter redirect url"
+                android:textColor="?attr/scheduleTimeHead"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center"/>
+
+            <EditText
+                android:id="@+id/redirectUrl"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext_ring"
+                android:layout_gravity="center"
+                android:padding="10dp"
+                android:layout_marginTop="3dp"
+                android:enabled="true"
+                android:gravity="start"
+                android:text="https://"
+                android:inputType="textUri"
+                android:textColor="?attr/textColor"
+                android:textColorHint="@color/grey"
+                android:textSize="17sp" />
+
+            <TextView
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="Schedule Timing"
+                android:textColor="?attr/scheduleTimeHead"
+                android:textSize="12sp"
+                android:layout_gravity="center"/>
+
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:weightSum="10"
+                android:layout_margin="5dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="7"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/typeIndicator"
+                    tools:text="Normal Scheduling"
+                    android:textSize="15sp"
+                    android:textColor="?attr/textColor"
+                    android:layout_gravity="center"/>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/typeSwitch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="3" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:animateLayoutChanges="true"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Start Time"
+                            android:textStyle="bold"
+                            android:textSize="12sp"
+                            android:textColor="?attr/scheduleTimeHead"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edittext_ring"
+                            android:text="CLICK TO SET TIME"
+                            android:textStyle="bold"
+                            android:textColor="?attr/scheduleTimeBold"
+                            android:textSize="17sp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:id="@+id/startTime"/>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Stop Time"
+                            android:textStyle="bold"
+                            android:textSize="12sp"
+                            android:textColor="?attr/scheduleTimeHead"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edittext_ring"
+                            android:text="CLICK TO SET TIME"
+                            android:textStyle="bold"
+                            android:textColor="?attr/scheduleTimeBold"
+                            android:textSize="17sp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:id="@+id/stopTime"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal"
+                    android:id="@+id/dateSelectionLayout"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Start Date"
+                            android:textStyle="bold"
+                            android:textSize="12sp"
+                            android:textColor="?attr/scheduleTimeHead"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edittext_ring"
+                            android:text="CLICK TO SET DATE"
+                            android:textStyle="bold"
+                            android:textColor="?attr/scheduleTimeBold"
+                            android:textSize="17sp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:id="@+id/startDate"/>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="End Date"
+                            android:textStyle="bold"
+                            android:textSize="12sp"
+                            android:textColor="?attr/scheduleTimeHead"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edittext_ring"
+                            android:text="CLICK TO SET DATE"
+                            android:textStyle="bold"
+                            android:textColor="?attr/scheduleTimeBold"
+                            android:textSize="17sp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:id="@+id/endDate"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="Schedule Scope"
+                android:textStyle="bold"
+                android:textColor="?attr/scheduleTimeHead"
+                android:textSize="12sp"
+                android:layout_gravity="center"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:animateLayoutChanges="true"
+                android:layout_margin="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/scopeIndicator"
+                    tools:text="Weekly"
+                    android:textSize="15sp"
+                    android:textColor="?attr/textColor"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"/>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/scopeSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_gravity="center" />
+
+                <LinearLayout
+                    android:id="@+id/weeklyDayPick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center">
+
+                    <RelativeLayout
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:background="@drawable/day_back"
+                        android:layout_margin="5dp"
+                        android:id="@+id/sunButton"
+                        android:animateLayoutChanges="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="SUN"
+                            android:textSize="13sp"
+                            android:textColor="?attr/scheduleDayText"
+                            android:textStyle="bold"/>
+
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="4dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/unselected_day"
+                            android:id="@+id/sunIndicator"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:background="@drawable/day_back"
+                        android:layout_margin="5dp"
+                        android:id="@+id/monButton"
+                        android:animateLayoutChanges="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="MON"
+                            android:textSize="13sp"
+                            android:textColor="?attr/scheduleDayText"
+                            android:textStyle="bold"/>
+
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="4dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/unselected_day"
+                            android:id="@+id/monIndicator"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:background="@drawable/day_back"
+                        android:layout_margin="5dp"
+                        android:id="@+id/tueButton"
+                        android:animateLayoutChanges="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="TUE"
+                            android:textSize="13sp"
+                            android:textColor="?attr/scheduleDayText"
+                            android:textStyle="bold"/>
+
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="4dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/unselected_day"
+                            android:id="@+id/tueIndicator"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:background="@drawable/day_back"
+                        android:layout_margin="5dp"
+                        android:id="@+id/wedButton"
+                        android:animateLayoutChanges="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="WED"
+                            android:textSize="13sp"
+                            android:textColor="?attr/scheduleDayText"
+                            android:textStyle="bold"/>
+
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="4dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/unselected_day"
+                            android:id="@+id/wedIndicator"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:background="@drawable/day_back"
+                        android:layout_margin="5dp"
+                        android:id="@+id/thuButton"
+                        android:animateLayoutChanges="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="THU"
+                            android:textSize="13sp"
+                            android:textColor="?attr/scheduleDayText"
+                            android:textStyle="bold"/>
+
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="4dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/unselected_day"
+                            android:id="@+id/thuIndicator"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:background="@drawable/day_back"
+                        android:layout_margin="5dp"
+                        android:id="@+id/friButton"
+                        android:animateLayoutChanges="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="FRI"
+                            android:textSize="13sp"
+                            android:textColor="?attr/scheduleDayText"
+                            android:textStyle="bold"/>
+
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="4dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/unselected_day"
+                            android:id="@+id/friIndicator"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:background="@drawable/day_back"
+                        android:layout_margin="5dp"
+                        android:id="@+id/satButton"
+                        android:animateLayoutChanges="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="SAT"
+                            android:textSize="13sp"
+                            android:textColor="?attr/scheduleDayText"
+                            android:textStyle="bold"/>
+
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="4dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/unselected_day"
+                            android:id="@+id/satIndicator"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/addScheduleBtn"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/colorPrimaryDark"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="ADD"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:id="@+id/addText"/>
+
+        <ProgressBar
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerInParent="true"
+            android:theme="@style/ProgressTheme"
+            android:visibility="gone"
+            android:id="@+id/addProgress"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent">
+
+    <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            app:cardBackgroundColor="?attr/roundBackground"
+            app:cardElevation="10dp"
+            app:cardCornerRadius="10dp"
+            android:layout_margin="25dp">
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="15dp"
+                android:orientation="vertical">
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Sync Processing"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:textColor="@color/colorPrimaryDark"/>
+
+            </LinearLayout>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Currently counting files, please be patient."
+                    android:gravity="center"
+                    android:textColor="?attr/textColor"
+                    android:textStyle="normal"
+                    android:textSize="13sp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:id="@+id/zipDownloadProgress"/>
+
+            <com.wang.avi.AVLoadingIndicatorView
+                    style="@style/AVLoadingIndicatorView"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_gravity="center"
+                    android:visibility="visible"
+                    app:indicatorColor="@color/colorPrimaryDark"
+                    app:indicatorName="LineSpinFadeLoaderIndicator"
+                    android:layout_centerInParent="true"
+                    android:id="@+id/loadingLoading"/>
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="File Count: 78"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:layout_marginTop="15dp"
+                    android:id="@+id/fileCount"/>
+
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/exit_button"
+                    android:text="Cancel"
+                    android:textSize="15sp"
+                    android:layout_gravity="center"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:layout_marginBottom="20dp"
+                    android:textAllCaps="false"
+                    android:id="@+id/cancelBtn"/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

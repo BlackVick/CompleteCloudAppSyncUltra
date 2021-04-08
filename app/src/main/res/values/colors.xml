@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#BA4AFF</color>
+    <color name="colorPrimaryDark">#7B1EE4</color>
+    <color name="buttons">#7B1EE4</color>
+    <color name="colorAccent">#31005C</color>
+    <color name="boldTextColor">#2F0F41</color>
+    <color name="white">#FFFFFF</color>
+    <color name="offWhite">#EEEEEE</color>
+    <color name="dullWhite">#BDBABA</color>
+    <color name="veryDullWhite">#AAAAAA</color>
+    <color name="black">#000000</color>
+    <color name="offBlack">#252424</color>
+    <color name="grey">#838282</color>
+    <color name="red">#BF1919</color>
+    <color name="green">#0D983C</color>
+    <color name="blue">#028DB6</color>
+    <color name="selectedColor">#7904FF</color>
+
+    <color name="experimentalBlue">#2C0A4A</color>
+
+    <color name="fadeGrey">#EED6D6D6</color>
+    <color name="dayBackGrey">#7E7B7B</color>
+    <color name="dayBackWhite">#BFBABA</color>
+
+    <color name="transparentBlue">#B28928BD</color>
+    <color name="transparentWhite">#B2FFFFFF</color>
+    <color name="transparentBlack">#4D000000</color>
+    <color name="transparentDeepBlack">#CE000000</color>
+    <color name="transparentSemiDeepBlack">#BF000000</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="transparentRingWhite">#CDFFFFFF</color>
+    <color name="transparentRingBlack">#CC000000</color>
+
+
+    <color name="colorBasicPrimary">#4A9BFF</color>
+    <color name="colorBasicPrimaryDark">#286BBD</color>
+    <color name="buttonsBasic">#286BBD</color>
+    <color name="colorBasicAccent">#00295C</color>
+    <color name="boldBasicTextColor">#0f1341</color>
+    <color name="selectedBasicColor">#0475FF</color>
+    <color name="transparentBasicBlue">#B2286BBD</color>
+</resources>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/white_round_back">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Live Stream"
+            android:textColor="?attr/textColor"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:textStyle="bold"
+            android:textSize="25sp"/>
+
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:text="You have the option to use your default online link or set a custom link for yourself."
+            android:textColor="?attr/textColor"
+            android:textSize="18sp"
+            android:gravity="center"/>
+
+        <EditText
+            android:id="@+id/customLink"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/edittext_ring"
+            android:gravity="start"
+            android:hint="Custom Link"
+            android:inputType="textUri"
+            android:padding="10dp"
+            android:textColor="?attr/textColor"
+            android:textColorHint="@color/fadeGrey"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="50dp"
+                android:layout_marginEnd="5dp"
+                android:layout_gravity="center"
+                android:background="@drawable/exit_button"
+                android:animateLayoutChanges="true"
+                android:id="@+id/cancelButton">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="USE DEFAULT"
+                    android:textSize="15sp"
+                    android:textColor="?attr/buttonTextColor"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                android:layout_gravity="center"
+                android:background="@drawable/buttons"
+                android:animateLayoutChanges="true"
+                android:id="@+id/connectButton">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="ACCEPT CUSTOM"
+                    android:textSize="15sp"
+                    android:textColor="?attr/buttonTextColor"
+                    android:id="@+id/connectText"/>
+
+                <ProgressBar
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:theme="@style/ProgressTheme"
+                    android:layout_centerInParent="true"
+                    android:id="@+id/connectProgress"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

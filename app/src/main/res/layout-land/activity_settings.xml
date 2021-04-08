@@ -1,0 +1,1035 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    tools:context=".Ultra.Setting">
+
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="15dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp">
+
+            <ImageView
+                android:id="@+id/backButton"
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_back"
+                app:tint="?attr/tintColor" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/backButton"
+                android:text="App Settings"
+                android:textColor="?attr/textColor"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="45dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ScrollView
+                    android:layout_width="320dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="320dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="7dp"
+                            android:background="@drawable/edittext_ring2"
+                            android:orientation="vertical"
+                            android:padding="5dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Appearance"
+                                android:textColor="?attr/textTitleColor"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="10">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="7"
+                                    android:text="Dark Mode"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="15sp" />
+
+                                <androidx.appcompat.widget.SwitchCompat
+                                    android:id="@+id/darkModeSwitch"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="3" />
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="Splash Screen Style"
+                                android:textColor="?attr/textTitleColor"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="10">
+
+                                <TextView
+                                    android:id="@+id/splashIndicator"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="7"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="15sp"
+                                    tools:text="Image" />
+
+                                <androidx.appcompat.widget.SwitchCompat
+                                    android:id="@+id/splashSwitch"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="3" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="2"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginEnd="5dp">
+
+                                <TextView
+                                    android:id="@+id/changeAppBackground"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/buttons"
+                                    android:gravity="center"
+                                    android:padding="7dp"
+                                    android:text="Change Background"
+                                    android:textColor="@color/white"
+                                    android:textSize="12sp"
+                                    android:layout_marginEnd="4dp"/>
+
+                                <TextView
+                                    android:id="@+id/restoreDefaultBackground"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/buttons"
+                                    android:gravity="center"
+                                    android:padding="7dp"
+                                    android:text="Default Background"
+                                    android:textColor="@color/white"
+                                    android:textSize="12sp"
+                                    android:layout_marginStart="4dp"/>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="7dp"
+                            android:background="@drawable/edittext_ring2"
+                            android:orientation="vertical"
+                            android:padding="5dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Launch Page From"
+                                android:textColor="?attr/textTitleColor"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="10">
+
+                                <TextView
+                                    android:id="@+id/launchIndicator"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="7"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="15sp"
+                                    tools:text="Local" />
+
+                                <androidx.appcompat.widget.SwitchCompat
+                                    android:id="@+id/launchSwitch"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="3" />
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Show Online Status"
+                                android:textColor="?attr/textTitleColor"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="10">
+
+                                <TextView
+                                    android:id="@+id/onlineIndicator"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="7"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="15sp"
+                                    tools:text="Show" />
+
+                                <androidx.appcompat.widget.SwitchCompat
+                                    android:id="@+id/onlineSwitch"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="3" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="7dp"
+                            android:background="@drawable/edittext_ring2"
+                            android:orientation="vertical"
+                            android:padding="5dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Security"
+                                android:textColor="?attr/textTitleColor"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="10">
+
+                                <TextView
+                                    android:id="@+id/passwordIndicator"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="7"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="15sp"
+                                    tools:text="One-Time Password" />
+
+                                <androidx.appcompat.widget.SwitchCompat
+                                    android:id="@+id/singleAccessSwitch"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="3" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginEnd="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="10">
+
+                                <TextView
+                                    android:id="@+id/changePassword"
+                                    android:layout_width="0dp"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="10"
+                                    android:background="@drawable/buttons"
+                                    android:gravity="center"
+                                    android:padding="7dp"
+                                    android:text="Change Password"
+                                    android:textColor="@color/white"
+                                    android:textSize="12sp" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="7dp"
+                            android:background="@drawable/edittext_ring2"
+                            android:orientation="vertical"
+                            android:padding="5dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Web User Agent"
+                                android:textColor="?attr/textTitleColor"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="10">
+
+                                <TextView
+                                    android:id="@+id/agentIndicator"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="7"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="15sp"
+                                    tools:text="Local" />
+
+                                <androidx.appcompat.widget.SwitchCompat
+                                    android:id="@+id/agentSwitch"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="3" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="7dp"
+                            android:background="@drawable/edittext_ring2"
+                            android:orientation="vertical"
+                            android:padding="5dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Support and Branding"
+                                android:textColor="?attr/textTitleColor"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginEnd="5dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/changeCustomUrl"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/buttons"
+                                    android:gravity="center"
+                                    android:padding="7dp"
+                                    android:text="Change URL"
+                                    android:textColor="@color/white"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/changeCustomImage"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="10dp"
+                                    android:background="@drawable/buttons"
+                                    android:gravity="center"
+                                    android:padding="7dp"
+                                    android:text="Change Image"
+                                    android:textColor="@color/white"
+                                    android:textSize="12sp" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="7dp"
+                            android:orientation="horizontal"
+                            android:padding="5dp"
+                            android:weightSum="2">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/edittext_ring2"
+                                android:orientation="vertical"
+                                android:padding="5dp">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Schedule Location"
+                                    android:textColor="?attr/textTitleColor"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="5dp"
+                                    android:orientation="horizontal"
+                                    android:weightSum="10">
+
+                                    <TextView
+                                        android:id="@+id/scheduleIndicator"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_weight="6"
+                                        android:textColor="?attr/textColor"
+                                        android:textSize="15sp"
+                                        tools:text="Local" />
+
+                                    <androidx.appcompat.widget.SwitchCompat
+                                        android:id="@+id/scheduleSwitch"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_weight="4" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="7dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/edittext_ring2"
+                                android:orientation="vertical"
+                                android:padding="5dp">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Test Mode Toggle"
+                                    android:textColor="?attr/textTitleColor"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="5dp"
+                                    android:orientation="horizontal"
+                                    android:weightSum="10">
+
+                                    <TextView
+                                        android:id="@+id/testIndicator"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_weight="6"
+                                        android:textColor="?attr/textColor"
+                                        android:textSize="15sp"
+                                        tools:text="Local" />
+
+                                    <androidx.appcompat.widget.SwitchCompat
+                                        android:id="@+id/testSwitch"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_weight="4" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="7dp"
+                            android:background="@drawable/edittext_ring2"
+                            android:orientation="vertical"
+                            android:padding="5dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Start Mode"
+                                android:textColor="?attr/textTitleColor"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="10">
+
+                                <TextView
+                                    android:id="@+id/startIndicator"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="7"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="15sp"
+                                    tools:text="Local" />
+
+                                <androidx.appcompat.widget.SwitchCompat
+                                    android:id="@+id/startSwitch"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="3" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </ScrollView>
+
+                <ScrollView
+                    android:layout_width="320dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="320dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="7dp"
+                            android:background="@drawable/edittext_ring2"
+                            android:orientation="vertical"
+                            android:padding="5dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Webpage Refresh Interval"
+                                android:textColor="?attr/textTitleColor"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="3dp"
+                                android:layout_marginTop="1dp"
+                                android:layout_marginEnd="3dp"
+                                android:layout_marginBottom="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/timePickerEdt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/edittext_ring"
+                                    android:padding="6dp"
+                                    android:text="00:00"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/refreshTimeSelector"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_marginEnd="8dp"
+                                    android:background="@drawable/buttons"
+                                    android:gravity="center"
+                                    android:paddingStart="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:text="Customize"
+                                    android:textColor="@color/white"
+                                    android:textSize="12sp"
+                                    android:textStyle="normal" />
+
+                            </LinearLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginBottom="12dp"
+                                android:animateLayoutChanges="true"
+                                android:background="@drawable/edittext_ring">
+
+                                <Spinner
+                                    android:id="@+id/refreshSpinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_marginEnd="5dp"
+                                    android:textSize="17sp" />
+
+                            </RelativeLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="10">
+
+                                <TextView
+                                    android:id="@+id/refreshIndicator"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="7"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="15sp"
+                                    tools:text="Sync on change" />
+
+                                <androidx.appcompat.widget.SwitchCompat
+                                    android:id="@+id/refreshSwitch"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="3" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="7dp"
+                            android:background="@drawable/edittext_ring2"
+                            android:orientation="vertical"
+                            android:padding="5dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="App Sync Interval"
+                                android:textColor="?attr/textTitleColor"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="3dp"
+                                android:layout_marginTop="1dp"
+                                android:layout_marginEnd="3dp"
+                                android:layout_marginBottom="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/appTimePickerEdt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/edittext_ring"
+                                    android:padding="6dp"
+                                    android:text="00:00"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/appTimeSelector"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_marginEnd="8dp"
+                                    android:background="@drawable/buttons"
+                                    android:gravity="center"
+                                    android:paddingStart="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:text="Customize"
+                                    android:textColor="@color/white"
+                                    android:textSize="12sp"
+                                    android:textStyle="normal" />
+
+                            </LinearLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginBottom="12dp"
+                                android:animateLayoutChanges="true"
+                                android:background="@drawable/edittext_ring">
+
+                                <Spinner
+                                    android:id="@+id/syncSpinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_marginEnd="5dp"
+                                    android:textSize="17sp" />
+
+                            </RelativeLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="10">
+
+                                <TextView
+                                    android:id="@+id/syncIndicator"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="7"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="15sp"
+                                    tools:text="Sync on change" />
+
+                                <androidx.appcompat.widget.SwitchCompat
+                                    android:id="@+id/syncSwitch"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="3" />
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="7dp"
+                            android:background="@drawable/edittext_ring2"
+                            android:orientation="vertical"
+                            android:padding="5dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Change Master Domain"
+                                android:textColor="?attr/textTitleColor"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="10">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginEnd="10dp"
+                                    android:layout_marginBottom="12dp"
+                                    android:animateLayoutChanges="true"
+                                    android:background="@drawable/edittext_ring">
+
+                                    <Spinner
+                                        android:id="@+id/domainSpinner"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginStart="5dp"
+                                        android:layout_marginEnd="5dp"
+                                        android:textSize="17sp" />
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="7dp"
+                            android:background="@drawable/edittext_ring2"
+                            android:orientation="vertical"
+                            android:padding="5dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Sync Mode"
+                                android:textColor="?attr/textTitleColor"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:orientation="horizontal"
+                                android:weightSum="10">
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="8"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="35dp"
+                                        android:gravity="center_vertical"
+                                        android:paddingStart="10dp"
+                                        android:paddingEnd="5dp"
+                                        android:text="FTP Folder"
+                                        android:textColor="?attr/textColor" />
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="35dp"
+                                        android:gravity="center_vertical"
+                                        android:paddingStart="10dp"
+                                        android:paddingEnd="5dp"
+                                        android:text="FTP ZIP"
+                                        android:textColor="?attr/textColor" />
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="35dp"
+                                        android:gravity="center_vertical"
+                                        android:paddingStart="10dp"
+                                        android:paddingEnd="5dp"
+                                        android:text="URL ZIP"
+                                        android:textColor="?attr/textColor" />
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="35dp"
+                                        android:gravity="center_vertical"
+                                        android:paddingStart="10dp"
+                                        android:paddingEnd="5dp"
+                                        android:text="API"
+                                        android:textColor="?attr/textColor" />
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="35dp"
+                                        android:gravity="center_vertical"
+                                        android:paddingStart="10dp"
+                                        android:paddingEnd="5dp"
+                                        android:text="Index Change"
+                                        android:textColor="?attr/textColor" />
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="35dp"
+                                        android:gravity="center_vertical"
+                                        android:paddingStart="10dp"
+                                        android:paddingEnd="5dp"
+                                        android:text="Parsing"
+                                        android:textColor="?attr/textColor" />
+
+                                </LinearLayout>
+
+                                <RadioGroup
+                                    android:id="@+id/syncModeRadio"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="2"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
+
+                                    <RadioButton
+                                        android:id="@+id/ftpFolderRadio"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="35dp"
+                                        android:buttonTint="@color/colorPrimary"/>
+
+                                    <RadioButton
+                                        android:id="@+id/ftpZipRadio"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="35dp"
+                                        android:buttonTint="@color/colorPrimary"/>
+
+                                    <RadioButton
+                                        android:id="@+id/urlZipRadio"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="35dp"
+                                        android:buttonTint="@color/colorPrimary"/>
+
+                                    <RadioButton
+                                        android:id="@+id/apiRadio"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="35dp"
+                                        android:buttonTint="@color/colorPrimary"/>
+
+                                    <RadioButton
+                                        android:id="@+id/indexRadio"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="35dp"
+                                        android:buttonTint="@color/colorPrimary"/>
+
+                                    <RadioButton
+                                        android:id="@+id/parseRadio"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="35dp"
+                                        android:buttonTint="@color/colorPrimary"/>
+
+                                </RadioGroup>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="7dp"
+                            android:background="@drawable/edittext_ring2"
+                            android:orientation="vertical"
+                            android:padding="5dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Restore To Default"
+                                android:textColor="?attr/textTitleColor"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginEnd="5dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/restoreBtn"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/buttons"
+                                    android:gravity="center"
+                                    android:padding="7dp"
+                                    android:text="Restore"
+                                    android:textColor="@color/white"
+                                    android:textSize="12sp" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </ScrollView>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
