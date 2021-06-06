@@ -29,6 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cloudappsync.ultra.Basic.BasicWebActivity;
 import com.cloudappsync.ultra.PasswordCheckPage;
 import com.cloudappsync.ultra.Models.Domains;
 import com.cloudappsync.ultra.Models.FileHistory;
@@ -115,7 +116,7 @@ public class WebActivity extends AppCompatActivity {
     private Runnable runnable;
 
     //new values
-    private String url;
+    private static String url;
     private boolean hasAlreadyStarted = false;
 
 
@@ -251,6 +252,16 @@ public class WebActivity extends AppCompatActivity {
 
             }
 
+            if (pageType.equals(Common.LOAD_FROM_ONLINE)){
+
+                connectionIndicator.setImageResource(R.drawable.online);
+
+            } else {
+
+                connectionIndicator.setImageResource(R.drawable.local_indicator);
+
+            }
+
         } else {
 
             connectionIndicator.setVisibility(View.GONE);
@@ -280,13 +291,23 @@ public class WebActivity extends AppCompatActivity {
         });
 
         //launch
-        if (Paper.book().read(Common.LOAD_STYLE).equals(Common.LOAD_FROM_ONLINE)){
+        if (pageType.equals(Common.LOAD_FROM_ONLINE)){
 
             if (Paper.book().read(Common.PAGE_REFRESH_STATUS, Common.PAGE_REFRESH_ACTIVE).equals(Common.PAGE_REFRESH_ACTIVE)) {
 
                 refreshPage();
 
             }
+
+        }
+
+        if (Paper.book().read(Common.LOAD_STYLE).equals(Common.LOAD_FROM_ONLINE)){
+
+            connectionIndicator.setImageResource(R.drawable.online);
+
+        } else {
+
+            connectionIndicator.setImageResource(R.drawable.local_indicator);
 
         }
 
@@ -347,7 +368,6 @@ public class WebActivity extends AppCompatActivity {
                     Toast.makeText(view.getContext(), "HTTP error", Toast.LENGTH_SHORT).show();
                     myWebView.loadUrl("file:///" + WebActivity.localWebDirectory.getAbsolutePath() + "/index.html");
                     Toast.makeText(WebActivity.this, "RecievedHttp Error", Toast.LENGTH_SHORT).show();
-                    WebActivity.updateOfflineOrOnlineBtn(true);
                     WebActivity.this.progressBar.setVisibility(View.GONE);
                 }
                 Context context = view.getContext();
@@ -359,7 +379,6 @@ public class WebActivity extends AppCompatActivity {
                 WebView access$000 = WebActivity.myWebView;
                 myWebView.loadUrl("file:///" + WebActivity.localWebDirectory.getAbsolutePath() + "/index.html");
                 Toast.makeText(WebActivity.this, "Crossed received", Toast.LENGTH_SHORT).show();
-                WebActivity.updateOfflineOrOnlineBtn(true);
             }
 
             @Override
@@ -379,10 +398,9 @@ public class WebActivity extends AppCompatActivity {
             }
 
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (WebActivity.this.isInternetConnection()) {
+                if (Paper.book().read(Common.IS_DEVICE_CONNECTED).equals("False")) {
                     myWebView.loadUrl("file:///" + localWebDirectory.getAbsolutePath() + "/index.html");
                     Toast.makeText(WebActivity.this, "Couldn't connect , Loading Local files", Toast.LENGTH_LONG).show();
-                    updateOfflineOrOnlineBtn(true);
                 }
                 if (url == null || url.startsWith("http://") || url.startsWith("https://")) {
                     return false;
@@ -421,7 +439,6 @@ public class WebActivity extends AppCompatActivity {
                     myWebView.loadUrl("file:///" + WebActivity.localWebDirectory.getAbsolutePath() + "/index.html");
 
                     Toast.makeText(WebActivity.this, "OnReceived Title", Toast.LENGTH_SHORT).show();
-                    updateOfflineOrOnlineBtn(true);
                     progressBar.setVisibility(View.GONE);
                 }
             }
@@ -476,7 +493,7 @@ public class WebActivity extends AppCompatActivity {
         isSchedule = false;
 
         //load former webpage
-        myWebView.goBack();
+        myWebView.loadUrl(url);
 
         //remove
         theSchedules.remove(position);
@@ -499,36 +516,29 @@ public class WebActivity extends AppCompatActivity {
         }
     }
 
-    public boolean isInternetConnection() {
-        NetworkInfo[] info;
-        ConnectivityManager manager = (ConnectivityManager) getSystemService(Service.CONNECTIVITY_SERVICE);
-        if (!(manager == null || (info = manager.getAllNetworkInfo()) == null)) {
-            for (NetworkInfo state : info) {
-                if (state.getState() == NetworkInfo.State.CONNECTED) {
-                    updateOfflineOrOnlineBtn(false);
-                    return false;
-                }
-                updateOfflineOrOnlineBtn(true);
+    public static void updateUltraNetworkData(boolean value){
+
+        if(value){
+
+            BasicWebActivity bwa = new BasicWebActivity();
+
+            Log.i("ConnectionStatus", "Now Online" + url);
+            myWebView.loadUrl(url);
+            if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
+                connectionIndicator.setImageResource(R.drawable.online);
             }
+            testOnlineIndicator.setImageResource(R.drawable.online);
+            //Toast.makeText(this, "Ran", Toast.LENGTH_SHORT).show();
+            Log.i("ConnectionStatus", "Now Online" + url);
+        }else {
+            myWebView.loadUrl("file:///" + localWebDirectory.getAbsolutePath() + "/index.html");
+            if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
+                connectionIndicator.setImageResource(R.drawable.offline);
+            }
+            testOnlineIndicator.setImageResource(R.drawable.offline);
+            //Toast.makeText(this, "Ran", Toast.LENGTH_SHORT).show();
+            Log.i("ConnectionStatus", "Now Offline, Loading Local");
         }
-        updateOfflineOrOnlineBtn(true);
-        return true;
-    }
-
-    public static void isInternetConnected(boolean value) {
-
-        //local contect
-        WebActivity lwa = new WebActivity();
-
-        if (value) {
-            myWebView.loadUrl(lwa.url);
-            updateOfflineOrOnlineBtn(false);
-            Log.i("ConnectionStatus", "Now Online" + lwa.url);
-            return;
-        }
-        myWebView.loadUrl("file:///" + localWebDirectory.getAbsolutePath() + "/index.html");
-        updateOfflineOrOnlineBtn(true);
-        Log.i("ConnectionStatus", "Now Offline, Loading Local");
     }
 
     public void unregisterNetworkChanges() {
@@ -536,29 +546,6 @@ public class WebActivity extends AppCompatActivity {
             unregisterReceiver(this.mNetworkReceiver);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-        }
-    }
-
-    public static void updateOfflineOrOnlineBtn(Boolean isConLocal) {
-
-        WebActivity lwa = new WebActivity();
-
-        if (pageType.equals(Common.LOAD_FROM_LOCAL) && !pageMode.equals(Common.PAGE_TEST_MODE)) {
-            connectionIndicator.setImageResource(R.drawable.local_indicator);
-        } else {
-            if (isConLocal) {
-                connectionIndicator.setImageResource(R.drawable.offline);
-                testOnlineIndicator.setImageResource(R.drawable.offline);
-            } else {
-                connectionIndicator.setImageResource(R.drawable.online);
-                testOnlineIndicator.setImageResource(R.drawable.online);
-                if (lwa.hasAlreadyStarted) {
-                    if (lwa.mCountDownTimer != null) {
-                        lwa.mCountDownTimer.cancel();
-                    }
-                    lwa.synchronizeAfterInterval();
-                }
-            }
         }
     }
 
@@ -606,11 +593,6 @@ public class WebActivity extends AppCompatActivity {
             finish();
             overridePendingTransition(R.anim.slide_right, R.anim.slide_out_right);
             return;
-        }
-        if (isInternetConnection()) {
-            super.onBackPressed();
-            this.timerActive = false;
-            myWebView.destroy();
         }
         //myWebView.goBack();
     }
@@ -677,8 +659,12 @@ public class WebActivity extends AppCompatActivity {
         filesChangedOnServer = 0;
         syncProgressBar.setProgress(0);
 
-        //sync at interval
-        synchroniseApp();
+        //synchronize
+        if (Paper.book().read(Common.IS_DEVICE_CONNECTED).equals("True")) {
+            synchroniseApp();
+        } else {
+            synchronizeAfterInterval();
+        }
 
     }
 
@@ -721,7 +707,11 @@ public class WebActivity extends AppCompatActivity {
                 mCountDownTimer.cancel();
 
                 //synchronize
-                synchroniseApp();
+                if (Paper.book().read(Common.IS_DEVICE_CONNECTED).equals("True")) {
+                    synchroniseApp();
+                } else {
+                    synchronizeAfterInterval();
+                }
             }
         }.start();
 

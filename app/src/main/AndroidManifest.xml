@@ -156,10 +156,6 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
         </receiver>
-        <receiver
-                android:name=".Receivers.TimedRedirectReceiver"
-                android:enabled="true"
-                android:exported="true"/>
 
         <provider
                 android:name=".Utilities.GenericFileProvider"

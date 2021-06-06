@@ -80,7 +80,15 @@ public class Home extends AppCompatActivity {
                     theUrl = Paper.book().read(Common.CURRENT_MASTER_DOMAIN) + "/" + companyId + "/" + licenceKey + "/App/Application/index.html";
                 }
 
-                Intent webIntent = new Intent(this, WebActivity.class);
+                //null
+                Intent webIntent = null;
+
+                //intent
+                if (Paper.book().read(Common.CURRENT_USER_TYPE, Common.USER_TYPE_BASIC).equals(Common.USER_TYPE_ULTRA)) {
+                    webIntent = new Intent(this, WebActivity.class);
+                } else {
+                    webIntent = new Intent(this, BasicWebActivity.class);
+                }
                 webIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 webIntent.putExtra(Common.WEB_PAGE_MODE, Common.PAGE_NO_SYNC_MODE);
                 webIntent.putExtra(Common.WEB_PAGE_TYPE, Common.LOAD_FROM_ONLINE);
@@ -98,7 +106,15 @@ public class Home extends AppCompatActivity {
                 File dir = new File(Environment.getExternalStorageDirectory(), Common.BASE_FOLDER_NAME);
                 File liDir = new File(dir.getAbsolutePath(), Common.LICENCED_FOLDER_NAME + "/" + companyId + "-" + licenceKey + "/" + Common.USER_WEBPAGE_FOLDER);
 
-                Intent webIntent = new Intent(this, WebActivity.class);
+                //null
+                Intent webIntent = null;
+
+                //intent
+                if (Paper.book().read(Common.CURRENT_USER_TYPE, Common.USER_TYPE_BASIC).equals(Common.USER_TYPE_ULTRA)) {
+                    webIntent = new Intent(this, WebActivity.class);
+                } else {
+                    webIntent = new Intent(this, BasicWebActivity.class);
+                }
                 webIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 webIntent.putExtra(Common.WEB_PAGE_MODE, Common.PAGE_NO_SYNC_MODE);
                 webIntent.putExtra(Common.WEB_PAGE_TYPE, Common.LOAD_FROM_LOCAL);

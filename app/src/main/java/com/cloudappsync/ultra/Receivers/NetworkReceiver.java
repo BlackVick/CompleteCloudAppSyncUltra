@@ -1,16 +1,17 @@
 package com.cloudappsync.ultra.Receivers;
 
-import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
-import com.cloudappsync.ultra.Basic.BasicWebActivity;
-import com.cloudappsync.ultra.Ultra.WebActivity;
 import com.cloudappsync.ultra.Utilities.Common;
 import io.paperdb.Paper;
+
+import static com.cloudappsync.ultra.Basic.BasicWebActivity.updateNetworkData;
+import static com.cloudappsync.ultra.Ultra.WebActivity.updateUltraNetworkData;
 
 public class NetworkReceiver extends BroadcastReceiver {
 
@@ -19,17 +20,24 @@ public class NetworkReceiver extends BroadcastReceiver {
 
             if (Paper.book().read(Common.CURRENT_USER_TYPE, Common.USER_TYPE_BASIC).equals(Common.USER_TYPE_ULTRA)) {
                 if (isOnline(context)) {
-                    WebActivity.isInternetConnected(true);
-                    return;
+                    updateUltraNetworkData(true);
+                    Paper.book().write(Common.IS_DEVICE_CONNECTED, "True");
+                    Log.e("ConnectionStatus", "Online Connect Intenet ");
+                } else {
+                    updateUltraNetworkData(false);
+                    Paper.book().write(Common.IS_DEVICE_CONNECTED, "False");
+                    Log.e("ConnectionStatus", "Conectivity Failure !!! ");
                 }
-                WebActivity.isInternetConnected(false);
             } else {
-                BasicWebActivity bwa = new BasicWebActivity();
                 if (isOnline(context)) {
-                    bwa.isInternetConnected(true);
-                    return;
+                    updateNetworkData(true);
+                    Paper.book().write(Common.IS_DEVICE_CONNECTED, "True");
+                    Log.e("ConnectionStatus", "Online Connect Intenet ");
+                } else {
+                    updateNetworkData(false);
+                    Paper.book().write(Common.IS_DEVICE_CONNECTED, "False");
+                    Log.e("ConnectionStatus", "Conectivity Failure !!! ");
                 }
-                bwa.isInternetConnected(false);
             }
 
         } catch (NullPointerException e) {
@@ -38,16 +46,14 @@ public class NetworkReceiver extends BroadcastReceiver {
     }
 
     private boolean isOnline(Context context) {
-        NetworkInfo[] info;
-        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Service.CONNECTIVITY_SERVICE);
-        if (manager == null || (info = manager.getAllNetworkInfo()) == null) {
+        try {
+            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo netInfo = cm.getActiveNetworkInfo();
+            //should check null because in airplane mode it will be null
+            return (netInfo != null && netInfo.isConnected());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
             return false;
         }
-        for (NetworkInfo state : info) {
-            if (state.getState() == NetworkInfo.State.CONNECTED) {
-                return true;
-            }
-        }
-        return false;
     }
 }

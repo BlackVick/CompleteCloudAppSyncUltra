@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.VideoView;
 
 import com.cloudappsync.ultra.Basic.BasicWebActivity;
+import com.cloudappsync.ultra.Basic.SignInBasic;
 import com.cloudappsync.ultra.Ultra.SignIn;
 import com.cloudappsync.ultra.Ultra.WebActivity;
 import com.cloudappsync.ultra.Utilities.Common;
@@ -174,10 +175,35 @@ public class Splash extends AppCompatActivity {
 
             } else {
 
-                Intent verificationIntent = new Intent(this, LicenceVerify.class);
-                startActivity(verificationIntent);
-                finish();
-                this.overridePendingTransition(R.anim.slide_left, R.anim.slide_out_left);
+                if (Paper.book().read(Common.CURRENT_USER_TYPE) != null){
+
+                    String userType = Paper.book().read(Common.CURRENT_USER_TYPE);
+
+                    switch (userType){
+                        case Common.USER_TYPE_BASIC:
+                            Intent signBasicIntent = new Intent(this, SignInBasic.class);
+                            startActivity(signBasicIntent);
+                            finish();
+                            this.overridePendingTransition(R.anim.slide_left, R.anim.slide_out_left);
+                            break;
+
+                        case Common.USER_TYPE_ULTRA:
+                            Intent signUltraIntent = new Intent(this, SignIn.class);
+                            startActivity(signUltraIntent);
+                            finish();
+                            this.overridePendingTransition(R.anim.slide_left, R.anim.slide_out_left);
+                            break;
+
+                    }
+
+                } else {
+
+                    Intent verificationIntent = new Intent(this, LicenceVerify.class);
+                    startActivity(verificationIntent);
+                    finish();
+                    this.overridePendingTransition(R.anim.slide_left, R.anim.slide_out_left);
+
+                }
 
             }
         }

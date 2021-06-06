@@ -199,4 +199,7 @@ public class Common {
     public static final String CURRENT_USER_TYPE = "UserType";
     public static final String USER_TYPE_BASIC = "Basic";
     public static final String USER_TYPE_ULTRA = "Ultra";
+
+    //connectivity
+    public static final String IS_DEVICE_CONNECTED = "IsDeviceConnected";
 }
