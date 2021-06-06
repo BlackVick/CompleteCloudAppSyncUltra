@@ -2226,6 +2226,10 @@ public class BasicWebActivity extends AppCompatActivity {
 
             }
 
+            //sort
+            //Collections.sort(theSchedules, (o1, o2) -> o1.getStartTime().compareTo(o2.getStartTime()));
+            theSchedules.sort(Comparator.comparing(Schedule::getStartTime));
+
             //text
             if (theSchedules.size() > 0){
 
