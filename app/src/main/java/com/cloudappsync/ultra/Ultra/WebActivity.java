@@ -660,7 +660,7 @@ public class WebActivity extends AppCompatActivity {
         syncProgressBar.setProgress(0);
 
         //synchronize
-        if (Paper.book().read(Common.IS_DEVICE_CONNECTED).equals("True")) {
+        if (Paper.book().read(Common.IS_DEVICE_CONNECTED, "False").equals("True")) {
             synchroniseApp();
         } else {
             synchronizeAfterInterval();
@@ -729,37 +729,43 @@ public class WebActivity extends AppCompatActivity {
         //set state
         hasAlreadyStarted = true;
 
-        switch (syncScope){
+        if (syncScope != null) {
+            switch (syncScope) {
 
-            case Common.SYNC_TYPE_FTP_FOLDER:
-                countFiles();
-                break;
+                case Common.SYNC_TYPE_FTP_FOLDER:
+                    countFiles();
+                    break;
 
-            case Common.SYNC_TYPE_FTP_ZIP:
-                countZip();
-                break;
+                case Common.SYNC_TYPE_FTP_ZIP:
+                    countZip();
+                    break;
 
-            case Common.SYNC_TYPE_URL_ZIP:
-                countURLZip();
-                break;
+                case Common.SYNC_TYPE_URL_ZIP:
+                    countURLZip();
+                    break;
 
-            case Common.SYNC_TYPE_INDEX:
-                checkIndexFiles();
-                break;
+                case Common.SYNC_TYPE_INDEX:
+                    checkIndexFiles();
+                    break;
 
-            case Common.SYNC_TYPE_PARSE:
-                //string
-                String selectedMasterDomain = Paper.book().read(Common.CURRENT_MASTER_DOMAIN);
-                String theCompany = Paper.book().read(Common.COMPANY_ID);
-                String theLicence = Paper.book().read(Common.LICENCE_ID);
-                //page url
-                String pageUrl = selectedMasterDomain + "/" + theCompany + "/" + theLicence + "/App/Application/index.html";
-                try {
-                    getParsedItems(theCompany, theLicence, pageUrl);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                break;
+                case Common.SYNC_TYPE_PARSE:
+                    //string
+                    String selectedMasterDomain = Paper.book().read(Common.CURRENT_MASTER_DOMAIN);
+                    String theCompany = Paper.book().read(Common.COMPANY_ID);
+                    String theLicence = Paper.book().read(Common.LICENCE_ID);
+                    //page url
+                    String pageUrl = selectedMasterDomain + "/" + theCompany + "/" + theLicence + "/App/Application/index.html";
+                    try {
+                        getParsedItems(theCompany, theLicence, pageUrl);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+
+            }
+        } else {
+
+            Toast.makeText(this, "A fatal error has occurred. Please resync now", Toast.LENGTH_LONG).show();
 
         }
 

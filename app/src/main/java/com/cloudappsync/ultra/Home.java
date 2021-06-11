@@ -48,6 +48,8 @@ public class Home extends AppCompatActivity {
         //attach layout
         setContentView(R.layout.activity_home);
 
+        doOtherGraphics();
+
         //tabs
         tabLayout = findViewById(R.id.tabs);
         viewPager = findViewById(R.id.viewPager);
@@ -59,6 +61,8 @@ public class Home extends AppCompatActivity {
         initUI();
 
     }
+
+
 
     private void initUI() {
 
@@ -265,6 +269,10 @@ public class Home extends AppCompatActivity {
             }
         }
 
+    }
+
+    private void doOtherGraphics() {
+
         if (!TextUtils.isEmpty(Paper.book().read(Common.APP_BACKGROUND))){
 
             //get uri
@@ -284,12 +292,12 @@ public class Home extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        doGraphicsStuff();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         doGraphicsStuff();
+        doOtherGraphics();
     }
 }
