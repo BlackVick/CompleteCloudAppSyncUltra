@@ -456,18 +456,20 @@ public class BasicSetting extends AppCompatActivity {
         String syncType = Paper.book().read(Common.CURRENT_SYNC_TYPE);
 
         //get current
-        switch (syncType){
-            case Common.SYNC_TYPE_FTP_ZIP:
-                ftpZipRadio.setChecked(true);
-                break;
+        if (syncType != null) {
+            switch (syncType) {
+                case Common.SYNC_TYPE_FTP_ZIP:
+                    ftpZipRadio.setChecked(true);
+                    break;
 
-            case Common.SYNC_TYPE_URL_ZIP:
-                urlZipRadio.setChecked(true);
-                break;
+                case Common.SYNC_TYPE_URL_ZIP:
+                    urlZipRadio.setChecked(true);
+                    break;
 
-            case Common.SYNC_TYPE_PARSE:
-                parseRadio.setChecked(true);
-                break;
+                case Common.SYNC_TYPE_PARSE:
+                    parseRadio.setChecked(true);
+                    break;
+            }
         }
 
         //set new

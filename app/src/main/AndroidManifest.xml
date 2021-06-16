@@ -52,19 +52,6 @@
                 android:theme="@style/Base.Theme.AppCompat"
                 tools:ignore="LockedOrientationActivity"/>
 
-        <receiver
-                android:name=".Receivers.ScheduleAlarmReceiver"
-                android:enabled="true"
-                android:exported="true">
-            <intent-filter android:priority="999">
-                <action android:name="Common.START_REDIRECT"/>
-            </intent-filter>
-        </receiver>
-
-        <service
-                android:name=".Services.SaveWebService"
-                android:enabled="true"
-                android:exported="false"/>
 
         <activity
                 android:name=".Splash"

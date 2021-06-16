@@ -1,5 +1,7 @@
 package com.cloudappsync.ultra;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,11 +36,16 @@ import com.cloudappsync.ultra.Ultra.WebActivity;
 import com.cloudappsync.ultra.Utilities.Common;
 import com.cloudappsync.ultra.Utilities.Database;
 import com.cloudappsync.ultra.Utilities.DownloadFromUrl;
+import com.cloudappsync.ultra.Utilities.ZipManager;
+import com.wwdablu.soumya.wzip.WZip;
+import com.wwdablu.soumya.wzip.WZipCallback;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
@@ -53,6 +60,8 @@ public class SyncActivity extends AppCompatActivity {
     private TextView cancelBtn, retryBtn, launchBtn, fileCountProgress, fileCountProgressPercent;
     private ProgressBar fileDownloadProgress;
     private TextView fileProgress;
+    private RelativeLayout loadingOverlay;
+    private TextView loadingText;
 
     //data
     private List<FileHistory> fileList;
@@ -76,6 +85,9 @@ public class SyncActivity extends AppCompatActivity {
     public int downloadedFiles = 0;
     private String companyId;
     private String licenceKey;
+
+    //timer
+    private Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +132,8 @@ public class SyncActivity extends AppCompatActivity {
         fileProgress = findViewById(R.id.fileProgress);
         fileCountProgress = findViewById(R.id.fileCountProgress);
         fileCountProgressPercent = findViewById(R.id.fileCountProgressPercent);
+        loadingOverlay = findViewById(R.id.loadingOverlay);
+        loadingText = findViewById(R.id.loadingText);
 
         //request perm
         requestPermissions();
@@ -604,6 +618,7 @@ public class SyncActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSION_REQUEST_CODE) {
 
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -688,36 +703,44 @@ public class SyncActivity extends AppCompatActivity {
 
         //init file directories
         File dir = new File(Environment.getExternalStorageDirectory(), Common.BASE_FOLDER_NAME);
-        File liDir = new File(dir, Common.LICENCED_FOLDER_NAME);
-        File destinationFolder = new File(liDir, companyId + "-" + licenceKey);
+        File liDir = new File(dir.getAbsolutePath(), Common.LICENCED_FOLDER_NAME);
+        File destinationFolder = new File(liDir.getAbsolutePath(), companyId + "-" + licenceKey);
 
         if (downloadFile.exists()) {
 
-            try {
-                FileInputStream fin = new FileInputStream(downloadFile);
-                ZipInputStream zin = new ZipInputStream(fin);
-
-                byte b[] = new byte[1024];
-
-                //check lir dir
-                if (!liDir.exists()) {
-                    liDir.mkdir();
-                }
-
-                //overwrite former
-                if (!destinationFolder.exists()){
-                    destinationFolder.mkdir();
-                }
-
-                unzip(downloadFile, destinationFolder);
-
-                //check launch type
-                checkLaunchType();
-
-            } catch (Exception e) {
-                Log.d("DecompressFileName", downloadFile.toString());
-                Log.d("Decompress", "unzip " + e.getMessage());
+            //check lir dir
+            if (!liDir.exists()) {
+                liDir.mkdirs();
             }
+
+            //overwrite former
+            if (!destinationFolder.exists()){
+                destinationFolder.mkdirs();
+            }
+
+            //show
+            showExtractionLoading(true, "Extracting. Please wait . . .");
+
+            //unzip files
+            ZipManager zipManager = new ZipManager();
+            zipManager.unzip(downloadFile.getAbsolutePath(), destinationFolder.getAbsolutePath(), true);
+
+            //set timer for extraction
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    new Handler(Looper.getMainLooper()).post(() -> {
+
+                        //remove loading
+                        showExtractionLoading(false, "Extracting. Please wait . . .");
+
+                        //check launch type
+                        checkLaunchType();
+
+                    });
+                }
+            }, 30000);
 
         } else {
 
@@ -727,47 +750,18 @@ public class SyncActivity extends AppCompatActivity {
 
     }
 
-    public static boolean unzip(File zipFile, File destinationDir) {
-        ZipFile zip = null;
-        try {
-            destinationDir.mkdirs();
-            zip = new ZipFile(zipFile);
-            Enumeration<? extends ZipEntry> zipFileEntries = zip.entries();
-            while (zipFileEntries.hasMoreElements()) {
-                ZipEntry entry = zipFileEntries.nextElement();
-                String entryName = entry.getName();
-                File destFile = new File(destinationDir, entryName);
-                File destinationParent = destFile.getParentFile();
-                if (destinationParent != null && !destinationParent.exists()) {
-                    destinationParent.mkdirs();
-                }
-                if (!entry.isDirectory()) {
-                    BufferedInputStream is = new BufferedInputStream(zip.getInputStream(entry));
-                    int currentByte;
-                    byte data[] = new byte[8192];
-                    FileOutputStream fos = new FileOutputStream(destFile);
-                    BufferedOutputStream dest = new BufferedOutputStream(fos, 8192);
-                    while ((currentByte = is.read(data, 0, 8192)) != -1) {
-                        dest.write(data, 0, currentByte);
-                    }
-                    dest.flush();
-                    dest.close();
-                    is.close();
-                }
-            }
-        } catch (Exception e) {
-            Log.d("Extracting", e.getMessage());
-            return false;
-        } finally {
-            if (zip != null) {
-                try {
-                    zip.close();
+    public void showExtractionLoading (boolean showLoading, String text) {
 
-                } catch (IOException ignored) {
-                }
-            }
+        //overlay visibility
+        if (showLoading) {
+            loadingOverlay.setVisibility(View.VISIBLE);
+        } else {
+            loadingOverlay.setVisibility(View.GONE);
         }
-        return true;
+
+        //set text
+        loadingText.setText(text);
+
     }
 
 

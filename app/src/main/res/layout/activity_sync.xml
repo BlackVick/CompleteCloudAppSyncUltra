@@ -157,4 +157,36 @@
 
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparentWhite"
+        android:id="@+id/loadingOverlay"
+        android:visibility="gone">
+
+        <com.wang.avi.AVLoadingIndicatorView
+            style="@style/AVLoadingIndicatorView"
+            android:layout_centerInParent="true"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            app:indicatorColor="@color/black"
+            app:indicatorName="LineSpinFadeLoaderIndicator"
+            android:id="@+id/loadingAvi"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/loadingAvi"
+            android:gravity="center"
+            android:layout_margin="35dp"
+            tools:text="Extracting files, please wait . . ."
+            android:textSize="17sp"
+            android:textColor="@color/black"
+            android:textStyle="normal"
+            android:id="@+id/loadingText"/>
+
+    </RelativeLayout>
+
+
 </RelativeLayout>

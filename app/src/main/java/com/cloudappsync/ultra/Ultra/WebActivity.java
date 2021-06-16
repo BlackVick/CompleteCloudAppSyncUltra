@@ -43,6 +43,7 @@ import com.cloudappsync.ultra.Utilities.Common;
 import com.cloudappsync.ultra.Interface.DownloadHelper;
 import com.cloudappsync.ultra.Utilities.Methods;
 
+import com.cloudappsync.ultra.Utilities.ZipManager;
 import com.opencsv.CSVReader;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.net.ftp.FTP;
@@ -167,6 +168,9 @@ public class WebActivity extends AppCompatActivity {
     //threads and parseing
     private Thread parseThread, secondaryParseThread;
     private List<String> theList = new ArrayList<>();
+
+    //timer
+    private Timer timer;
 
 
 
@@ -356,12 +360,19 @@ public class WebActivity extends AppCompatActivity {
         myWebView.getSettings().setAppCacheEnabled(false);
         myWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 
-        myWebView.loadUrl(url);
+        if (Paper.book().read(Common.IS_DEVICE_CONNECTED, "False").equals("True")){
+            myWebView.loadUrl(url);
+            Log.d("PageLoad", "Loading online");
+        } else {
+            myWebView.loadUrl("file:///" + localWebDirectory.getAbsolutePath() + "/index.html");
+            Log.d("PageLoad", "Loading offline");
+        }
+
 
         //webview client
         myWebView.setWebViewClient(new WebViewClient() {
 
-            public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+            /*public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
                 Log.i("apperror", "404 apperrorOnReceiveTitle");
                 if (errorResponse.getStatusCode() == 404) {
                     Log.i("apperror", "404 apperrorOnReceiveTitle");
@@ -379,7 +390,7 @@ public class WebActivity extends AppCompatActivity {
                 WebView access$000 = WebActivity.myWebView;
                 myWebView.loadUrl("file:///" + WebActivity.localWebDirectory.getAbsolutePath() + "/index.html");
                 Toast.makeText(WebActivity.this, "Crossed received", Toast.LENGTH_SHORT).show();
-            }
+            }*/
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -2627,48 +2638,50 @@ public class WebActivity extends AppCompatActivity {
 
         //init file directories
         File dir = new File(Environment.getExternalStorageDirectory(), Common.BASE_FOLDER_NAME);
-        File liDir = new File(dir, Common.LICENCED_FOLDER_NAME);
-        File destinationFolder = new File(liDir, companyId + "-" + licenceKey);
+        File liDir = new File(dir.getAbsolutePath(), Common.LICENCED_FOLDER_NAME);
+        File destinationFolder = new File(liDir.getAbsolutePath(), companyId + "-" + licenceKey);
 
         if (downloadFile.exists()) {
 
-            try {
-                FileInputStream fin = new FileInputStream(downloadFile);
-                ZipInputStream zin = new ZipInputStream(fin);
-
-                byte b[] = new byte[1024];
-
-                //check lir dir
-                if (!liDir.exists()) {
-                    liDir.mkdir();
-                }
-
-                //overwrite former
-                if (!destinationFolder.exists()) {
-                    destinationFolder.mkdir();
-                }
-
-                unzip(downloadFile, destinationFolder);
-
-                WebActivity.this.runOnUiThread(() -> {
-
-                    //set new master domain list
-                    setCustomDomains();
-
-                    //reload
-                    if (!isSchedule) {
-                        loadWebPage();
-                    }
-
-                    //start countdown again
-                    synchronizeAfterInterval();
-
-                });
-
-
-            } catch (Exception e) {
-                Log.e("Decompress", "unzip", e);
+            //check lir dir
+            if (!liDir.exists()) {
+                liDir.mkdirs();
             }
+
+            //overwrite former
+            if (!destinationFolder.exists()) {
+                destinationFolder.mkdirs();
+            }
+
+            //unzip files
+            ZipManager zipManager = new ZipManager();
+            zipManager.unzip(downloadFile.getAbsolutePath(), destinationFolder.getAbsolutePath(), false);
+
+            //set timer for extraction
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    new Handler(Looper.getMainLooper()).post(() -> {
+
+                        WebActivity.this.runOnUiThread(() -> {
+
+                            //set new master domain list
+                            setCustomDomains();
+
+                            //reload
+                            if (!isSchedule) {
+                                loadWebPage();
+                            }
+
+                            //start countdown again
+                            synchronizeAfterInterval();
+
+                        });
+
+                    });
+                }
+            }, 30000);
 
         } else {
 

@@ -48,29 +48,13 @@ public class Splash extends AppCompatActivity {
     public static final int PERMISSION_REQUEST_CODE = 234;
 
     //dynamic values
-    private boolean isPermitted = false;
     private String splashType = "";
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //check mode
-        if (Paper.book().read(Common.CURRENT_USER_TYPE, Common.USER_TYPE_BASIC).equals(Common.USER_TYPE_ULTRA)) {
-            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES || Paper.book().read(Common.VISUAL_STYLE, Common.DAY_MODE).equals(Common.NIGHT_MODE)) {
-                setTheme(R.style.UltraDarkTheme);
-            } else {
-                setTheme(R.style.UltraLightTheme);
-            }
-        } else {
-            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES || Paper.book().read(Common.VISUAL_STYLE, Common.DAY_MODE).equals(Common.NIGHT_MODE)) {
-                setTheme(R.style.BasicDarkTheme);
-            } else {
-                setTheme(R.style.BasicLightTheme);
-            }
-        }
-
         //attach layout
-        setContentView((int) R.layout.activity_splash);
+        setContentView(R.layout.activity_splash);
 
         //safe exit on app
         if (getIntent() != null){
@@ -211,29 +195,16 @@ public class Splash extends AppCompatActivity {
 
     private void checkAppPermissions() {
 
-        //check app mobile sdk version
-        if (Build.VERSION.SDK_INT >= 23){
-
-            //check permissions
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                    && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-
-                //approve permission
-                isPermitted = true;
-
-                //check file status
-                checkFile();
-
-            } else {
-
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
-
-            }
-
-        } else {
+        //check permissions
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
 
             //check file status
             checkFile();
+
+        } else {
+
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
 
         }
 
@@ -242,12 +213,10 @@ public class Splash extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSION_REQUEST_CODE) {
 
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                //switch value
-                isPermitted = true;
 
                 //check file status
                 checkFile();
@@ -475,7 +444,6 @@ public class Splash extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 
 }
