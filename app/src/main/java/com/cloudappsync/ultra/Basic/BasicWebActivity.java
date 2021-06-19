@@ -1,13 +1,9 @@
 package com.cloudappsync.ultra.Basic;
 
 import android.annotation.SuppressLint;
-import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.*;
 import android.text.TextUtils;
@@ -26,6 +22,7 @@ import com.cloudappsync.ultra.PasswordCheckPage;
 import com.cloudappsync.ultra.R;
 import com.cloudappsync.ultra.Receivers.NetworkReceiver;
 import com.cloudappsync.ultra.Ultra.WebActivity;
+import com.cloudappsync.ultra.Utilities.CheckInternet;
 import com.cloudappsync.ultra.Utilities.Common;
 import com.cloudappsync.ultra.Utilities.Database;
 import com.cloudappsync.ultra.Utilities.DownloadFromUrl;
@@ -49,9 +46,6 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipInputStream;
 
 public class BasicWebActivity extends AppCompatActivity {
 
@@ -84,9 +78,6 @@ public class BasicWebActivity extends AppCompatActivity {
     //settings
     private WebSettings webSettings;
 
-    //receivers
-    private NetworkReceiver mNetworkReceiver;
-
     //test values
     public int filesNumb = 0;
     public int totalFiles = 0;
@@ -104,7 +95,6 @@ public class BasicWebActivity extends AppCompatActivity {
 
     //new values
     private static String url;
-    private boolean hasAlreadyStarted = false;
 
 
 
@@ -156,7 +146,13 @@ public class BasicWebActivity extends AppCompatActivity {
     private List<String> theList = new ArrayList<>();
 
     //timer
-    private Timer timer;
+    private Timer zipTimer;
+
+    //values for off connection fix
+    private Timer connTimer;
+    private boolean isInternetAvailable = false;
+    private boolean hasSyncStarted = false;
+    private boolean lostDuringSync = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,10 +183,6 @@ public class BasicWebActivity extends AppCompatActivity {
         testStatus = Paper.book().read(Common.IS_IN_TEST_MODE);
         dbLicence = Paper.book().read(Common.CURRENT_DB_LICENCE);
         timeOut = Integer.parseInt(Paper.book().read(Common.PAGE_TIMEOUT_VALUE));
-
-        //register receiver
-        mNetworkReceiver = new NetworkReceiver();
-        registerNetworkBroadcastForNougat();
 
         //widgtes
         progressBar = findViewById(R.id.progressBar);
@@ -267,7 +259,11 @@ public class BasicWebActivity extends AppCompatActivity {
         //refresh layout
         this.mySwipeRefreshLayout.setOnRefreshListener(() -> {
             if (!isSchedule){
-                loadWebPage();
+                if (isInternetAvailable) {
+                    myWebView.loadUrl(url);
+                } else {
+                    myWebView.loadUrl("file:///" + localWebDirectory.getAbsolutePath() + "/index.html");
+                }
             }
             mySwipeRefreshLayout.setRefreshing(false);
         });
@@ -280,17 +276,6 @@ public class BasicWebActivity extends AppCompatActivity {
                 refreshPage();
 
             }
-
-        }
-
-        //sync
-        if (pageMode.equals(Common.PAGE_NO_SYNC_MODE)) {
-
-            synchronizeAfterInterval();
-
-        } else if (pageMode.equals(Common.PAGE_NORMAL_MODE) || pageMode.equals(Common.PAGE_TEST_MODE)) {
-
-            syncFirstThenInterval();
 
         }
 
@@ -328,13 +313,26 @@ public class BasicWebActivity extends AppCompatActivity {
         myWebView.getSettings().setAppCacheEnabled(false);
         myWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 
-        if (Paper.book().read(Common.IS_DEVICE_CONNECTED, "False").equals("True")){
+        //run check
+        if (connTimer != null){
+
+            connTimer.cancel();
+            runFirstCheck();
+
+        } else {
+
+            runFirstCheck();
+            Toast.makeText(this, "Ran", Toast.LENGTH_SHORT).show();
+
+        }
+
+        /*if (Paper.book().read(Common.IS_DEVICE_CONNECTED, "False").equals("True")){
             myWebView.loadUrl(url);
             Log.d("PageLoad", "Loading online");
         } else {
             myWebView.loadUrl("file:///" + localWebDirectory.getAbsolutePath() + "/index.html");
             Log.d("PageLoad", "Loading offline");
-        }
+        }*/
 
         //webview client
         myWebView.setWebViewClient(new WebViewClient() {
@@ -377,7 +375,7 @@ public class BasicWebActivity extends AppCompatActivity {
             }
 
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (Paper.book().read(Common.IS_DEVICE_CONNECTED).equals("False")) {
+                if (!isInternetAvailable) {
                     myWebView.loadUrl("file:///" + localWebDirectory.getAbsolutePath() + "/index.html");
                     Toast.makeText(BasicWebActivity.this, "Couldn't connect , Loading Local files", Toast.LENGTH_LONG).show();
                 }
@@ -460,7 +458,16 @@ public class BasicWebActivity extends AppCompatActivity {
         isSchedule = true;
 
         //load page
-        myWebView.loadUrl(theUrl);
+        if (isInternetAvailable) {
+            myWebView.loadUrl(theUrl);
+        } else {
+            if (theUrl.contains("file://")){
+                myWebView.loadUrl(theUrl);
+            } else {
+                myWebView.loadUrl("file:///" + localWebDirectory.getAbsolutePath() + "/index.html");
+                Toast.makeText(this, "Internet Unavailable", Toast.LENGTH_SHORT).show();
+            }
+        }
 
     }
 
@@ -472,7 +479,11 @@ public class BasicWebActivity extends AppCompatActivity {
         isSchedule = false;
 
         //load former webpage
-        myWebView.loadUrl(url);
+        if (isInternetAvailable) {
+            myWebView.loadUrl(url);
+        } else {
+            myWebView.loadUrl("file:///" + localWebDirectory.getAbsolutePath() + "/index.html");
+        }
 
         //remove
         theSchedules.remove(position);
@@ -486,46 +497,248 @@ public class BasicWebActivity extends AppCompatActivity {
 
 
     //internet check
-    private void registerNetworkBroadcastForNougat() {
-        if (Build.VERSION.SDK_INT >= 24) {
-            registerReceiver(this.mNetworkReceiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
-        }
-        if (Build.VERSION.SDK_INT >= 23) {
-            registerReceiver(this.mNetworkReceiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
-        }
+    public void runFirstCheck(){
+
+        new CheckInternet(BasicWebActivity.this, output -> {
+
+            switch (output){
+
+                case 1:
+                    //internet available
+                    Log.i("ConnectionStatus", "Now Online" + url);
+
+                    //set values
+                    isInternetAvailable = true;
+
+                    //load online url
+                    myWebView.loadUrl(url);
+
+                    //set indicator
+                    if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
+                        connectionIndicator.setImageResource(R.drawable.online);
+                    }
+                    testOnlineIndicator.setImageResource(R.drawable.online);
+
+                    //sync
+                    if (pageMode.equals(Common.PAGE_NO_SYNC_MODE)) {
+
+                        synchronizeAfterInterval();
+
+                    } else if (pageMode.equals(Common.PAGE_NORMAL_MODE) || pageMode.equals(Common.PAGE_TEST_MODE)) {
+
+                        syncFirstThenInterval();
+
+                    }
+
+                    //run continuous check
+                    runContinuousCheck();
+                    break;
+
+                case 0:
+                    //no internet
+                    Log.i("ConnectionStatus", "No Internet Connectivity: Loading Local");
+
+                    //set values
+                    isInternetAvailable = false;
+
+                    //load local page
+                    if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
+                        myWebView.loadUrl("file:///" + localWebDirectory.getAbsolutePath() + "/index.html");
+                    } else {
+                        myWebView.loadUrl(url);
+                    }
+
+                    //set indicator
+                    if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
+                        connectionIndicator.setImageResource(R.drawable.offline);
+                    }
+                    testOnlineIndicator.setImageResource(R.drawable.offline);
+
+                    //synchronization
+                    synchronizeAfterInterval();
+
+                    //run continuous check
+                    runContinuousCheck();
+                    break;
+
+                case 2:
+                    //no connectivity
+                    Log.i("ConnectionStatus", "No Connectivity Detected: Loading Local");
+
+                    //set values
+                    isInternetAvailable = false;
+
+                    //load local page
+                    if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
+                        myWebView.loadUrl("file:///" + localWebDirectory.getAbsolutePath() + "/index.html");
+                    } else {
+                        myWebView.loadUrl(url);
+                    }
+
+                    //set indicator
+                    if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
+                        connectionIndicator.setImageResource(R.drawable.offline);
+                    }
+                    testOnlineIndicator.setImageResource(R.drawable.offline);
+
+                    //synchronization
+                    synchronizeAfterInterval();
+
+                    //run continuous check
+                    runContinuousCheck();
+                    break;
+
+            }
+
+        }).execute();
+
     }
 
-    public static void updateNetworkData(boolean value){
+    public void runContinuousCheck(){
 
-        if(value){
+        connTimer = new Timer();
+        connTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                new Handler(Looper.getMainLooper()).post(() -> {
 
-            BasicWebActivity bwa = new BasicWebActivity();
+                    new CheckInternet(BasicWebActivity.this, output -> {
 
-            Log.i("ConnectionStatus", "Now Online" + url);
-            myWebView.loadUrl(url);
-            if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
-                connectionIndicator.setImageResource(R.drawable.online);
+                        switch (output){
+
+                            case 1:
+                                //check for connectivity
+                                if (!isInternetAvailable) {
+
+                                    //internet available
+                                    Log.i("ConnectionStatus", "Now Online" + url);
+
+                                    //set values
+                                    isInternetAvailable = true;
+
+                                    //load online url
+                                    myWebView.loadUrl(url);
+
+                                    //set indicator
+                                    if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
+                                        connectionIndicator.setImageResource(R.drawable.online);
+                                    }
+                                    testOnlineIndicator.setImageResource(R.drawable.online);
+
+                                    //sync
+                                    if (hasSyncStarted && lostDuringSync){
+
+                                        //set new state
+                                        lostDuringSync = false;
+
+                                        //clear countdown
+                                        if (mCountDownTimer != null){
+                                            mCountDownTimer.cancel();
+                                        }
+
+                                        //restart sync
+                                        synchronizeAfterInterval();
+
+                                    }
+
+                                } else {
+
+                                    //sync
+                                    if (hasSyncStarted && lostDuringSync){
+
+                                        //set new state
+                                        lostDuringSync = false;
+
+                                        //clear countdown
+                                        if (mCountDownTimer != null){
+                                            mCountDownTimer.cancel();
+                                        }
+
+                                        //restart sync
+                                        synchronizeAfterInterval();
+
+                                    }
+
+                                }
+
+                                //run continuous check
+                                runContinuousCheck();
+                                break;
+
+                            case 0:
+                                //no internet
+                                if (isInternetAvailable) {
+
+                                    Log.i("ConnectionStatus", "No Internet Connectivity: Loading Local");
+
+                                    //set values
+                                    isInternetAvailable = false;
+
+                                    //load local page
+                                    if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
+                                        myWebView.loadUrl("file:///" + localWebDirectory.getAbsolutePath() + "/index.html");
+                                    } else {
+                                        myWebView.loadUrl(url);
+                                    }
+
+                                    //set indicator
+                                    if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
+                                        connectionIndicator.setImageResource(R.drawable.offline);
+                                    }
+                                    testOnlineIndicator.setImageResource(R.drawable.offline);
+
+                                    //sync
+                                    if (hasSyncStarted){
+                                        lostDuringSync = true;
+                                    }
+
+                                }
+
+                                //run continuous check
+                                runContinuousCheck();
+                                break;
+
+                            case 2:
+                                //no connectivity
+                                if (isInternetAvailable) {
+
+                                    Log.i("ConnectionStatus", "No Connectivity Detected: Loading Local");
+
+                                    //set values
+                                    isInternetAvailable = false;
+
+                                    //load local page
+                                    if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
+                                        myWebView.loadUrl("file:///" + localWebDirectory.getAbsolutePath() + "/index.html");
+                                    } else {
+                                        myWebView.loadUrl(url);
+                                    }
+
+                                    //set indicator
+                                    if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
+                                        connectionIndicator.setImageResource(R.drawable.offline);
+                                    }
+                                    testOnlineIndicator.setImageResource(R.drawable.offline);
+
+                                    //sync
+                                    if (hasSyncStarted){
+                                        lostDuringSync = true;
+                                    }
+
+                                }
+
+                                //run continuous check
+                                runContinuousCheck();
+                                break;
+
+                        }
+
+                    }).execute();
+
+                });
             }
-            testOnlineIndicator.setImageResource(R.drawable.online);
-            //Toast.makeText(this, "Ran", Toast.LENGTH_SHORT).show();
-            Log.i("ConnectionStatus", "Now Online" + url);
-        }else {
-            myWebView.loadUrl("file:///" + localWebDirectory.getAbsolutePath() + "/index.html");
-            if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
-                connectionIndicator.setImageResource(R.drawable.offline);
-            }
-            testOnlineIndicator.setImageResource(R.drawable.offline);
-            //Toast.makeText(this, "Ran", Toast.LENGTH_SHORT).show();
-            Log.i("ConnectionStatus", "Now Offline, Loading Local");
-        }
-    }
+        }, 2500);
 
-    public void unregisterNetworkChanges() {
-        try {
-            unregisterReceiver(this.mNetworkReceiver);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
     }
 
 
@@ -540,11 +753,6 @@ public class BasicWebActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
-        unregisterNetworkChanges();
-
-        if (mCountDownTimer != null)
-            mCountDownTimer.cancel();
-
         handlerSchedule.removeCallbacks(runnableSchedule);
         handlerRunningSchedule.removeCallbacks(runnableRunningSchedule);
 
@@ -552,7 +760,6 @@ public class BasicWebActivity extends AppCompatActivity {
 
     public void onDestroy() {
         super.onDestroy();
-        unregisterNetworkChanges();
 
         if (mCountDownTimer != null)
             mCountDownTimer.cancel();
@@ -565,7 +772,6 @@ public class BasicWebActivity extends AppCompatActivity {
         if (!myWebView.canGoBack()) {
             super.onBackPressed();
             this.timerActive = false;
-            unregisterNetworkChanges();
             myWebView.destroy();
             Intent settingsIntent = new Intent(BasicWebActivity.this, PasswordCheckPage.class);
             startActivity(settingsIntent);
@@ -578,11 +784,7 @@ public class BasicWebActivity extends AppCompatActivity {
 
     public void onPause() {
         super.onPause();
-        unregisterNetworkChanges();
         this.timerActive = false;
-
-        if (mCountDownTimer != null)
-            mCountDownTimer.cancel();
 
         //check test mode
         switchTestMode();
@@ -595,10 +797,6 @@ public class BasicWebActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         this.timerActive = true;
-        registerNetworkBroadcastForNougat();
-        if (!isSchedule) {
-            loadWebPage();
-        }
     }
 
     @Override
@@ -639,7 +837,7 @@ public class BasicWebActivity extends AppCompatActivity {
         syncProgressBar.setProgress(0);
 
         //synchronize
-        if (Paper.book().read(Common.IS_DEVICE_CONNECTED, "False").equals("True")) {
+        if (isInternetAvailable) {
             synchroniseApp();
         } else {
             synchronizeAfterInterval();
@@ -665,6 +863,7 @@ public class BasicWebActivity extends AppCompatActivity {
         filesDownloaded = 0;
         filesChangedOnServer = 0;
         syncProgressBar.setProgress(0);
+        hasSyncStarted = false;
 
         //get sync time
         long theInterval = Long.parseLong(Paper.book().read(Common.APP_SYNC_INTERVAL));
@@ -692,7 +891,7 @@ public class BasicWebActivity extends AppCompatActivity {
                 mCountDownTimer.cancel();
 
                 //synchronize
-                if (Paper.book().read(Common.IS_DEVICE_CONNECTED).equals("True")) {
+                if (isInternetAvailable) {
                     synchroniseApp();
                 } else {
                     synchronizeAfterInterval();
@@ -709,7 +908,7 @@ public class BasicWebActivity extends AppCompatActivity {
         }
 
         //set state
-        hasAlreadyStarted = true;
+        hasSyncStarted = true;
 
         //sync type
         String syncScope = Paper.book().read(Common.CURRENT_SYNC_TYPE);
@@ -1986,8 +2185,8 @@ public class BasicWebActivity extends AppCompatActivity {
             zipManager.unzip(downloadFile.getAbsolutePath(), destinationFolder.getAbsolutePath(), false);
 
             //set timer for extraction
-            timer = new Timer();
-            timer.schedule(new TimerTask() {
+            zipTimer = new Timer();
+            zipTimer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     new Handler(Looper.getMainLooper()).post(() -> {

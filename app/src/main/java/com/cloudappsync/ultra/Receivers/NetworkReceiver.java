@@ -10,15 +10,12 @@ import android.util.Log;
 import com.cloudappsync.ultra.Utilities.Common;
 import io.paperdb.Paper;
 
-import static com.cloudappsync.ultra.Basic.BasicWebActivity.updateNetworkData;
-import static com.cloudappsync.ultra.Ultra.WebActivity.updateUltraNetworkData;
-
 public class NetworkReceiver extends BroadcastReceiver {
 
     public void onReceive(Context context, Intent intent) {
         try {
 
-            if (Paper.book().read(Common.CURRENT_USER_TYPE, Common.USER_TYPE_BASIC).equals(Common.USER_TYPE_ULTRA)) {
+            /*if (Paper.book().read(Common.CURRENT_USER_TYPE, Common.USER_TYPE_BASIC).equals(Common.USER_TYPE_ULTRA)) {
                 if (isOnline(context)) {
                     updateUltraNetworkData(true);
                     Paper.book().write(Common.IS_DEVICE_CONNECTED, "True");
@@ -38,7 +35,7 @@ public class NetworkReceiver extends BroadcastReceiver {
                     Paper.book().write(Common.IS_DEVICE_CONNECTED, "False");
                     Log.e("ConnectionStatus", "Conectivity Failure !!! ");
                 }
-            }
+            }*/
 
         } catch (NullPointerException e) {
             e.printStackTrace();
