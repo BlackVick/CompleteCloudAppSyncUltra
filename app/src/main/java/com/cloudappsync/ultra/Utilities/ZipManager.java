@@ -47,14 +47,13 @@ public class ZipManager {
         }
     }
 
-    public void unzip(String _zipFile, String _targetLocation, boolean isNew) {
+    public void unzip(File zipFile, File destinationDir, boolean isNew) {
 
-        File destinationDir = new File(_targetLocation);
 
         ZipFile zip = null;
         try {
             destinationDir.mkdirs();
-            zip = new ZipFile(new File(_zipFile));
+            zip = new ZipFile(zipFile);
             Enumeration<? extends ZipEntry> zipFileEntries = zip.entries();
             while (zipFileEntries.hasMoreElements()) {
                 ZipEntry entry = zipFileEntries.nextElement();

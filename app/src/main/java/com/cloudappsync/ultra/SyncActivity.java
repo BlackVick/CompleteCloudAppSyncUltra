@@ -721,9 +721,58 @@ public class SyncActivity extends AppCompatActivity {
             //show
             showExtractionLoading(true, "Extracting. Please wait . . .");
 
+            //wzip
+            /*WZip wZip = new WZip();
+            wZip.unzip(downloadFile,
+                    destinationFolder,
+                    "backupUnzipper",
+                    new WZipCallback() {
+                        @Override
+                        public void onStarted(String identifier) {
+
+                            //show loading
+                            showExtractionLoading(true, "Extracting. Please wait . . .");
+
+                            //log
+                            Log.d("Unzipping", "Unzipping started successfully");
+
+                        }
+
+                        @Override
+                        public void onZipCompleted(File zipFile, String identifier) {
+
+                        }
+
+                        @Override
+                        public void onUnzipCompleted(String identifier) {
+
+                            //remove loading
+                            showExtractionLoading(false, "");
+
+                            //log
+                            Log.d("Unzipping", "Unzipping finished successfully");
+
+                            //check launch type
+                            checkLaunchType();
+
+                        }
+
+                        @Override
+                        public void onError(Throwable throwable, String identifier) {
+
+                            //remove loading
+                            showExtractionLoading(false, "");
+
+                            //log
+                            Log.d("Unzipping", "Error : " + throwable.getMessage());
+                            Toast.makeText(SyncActivity.this, "Error occurred while unpacking. please try again", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });*/
+
             //unzip files
             ZipManager zipManager = new ZipManager();
-            zipManager.unzip(downloadFile.getAbsolutePath(), destinationFolder.getAbsolutePath(), true);
+            zipManager.unzip(downloadFile, destinationFolder, true);
 
             //set timer for extraction
             timer = new Timer();

@@ -1,7 +1,10 @@
 package com.cloudappsync.ultra.Utilities;
 
 import android.annotation.SuppressLint;
+import android.app.Service;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Environment;
 import android.util.Log;
 
@@ -276,6 +279,25 @@ public class Methods {
         }).start();
 
         return theList;
+    }
+
+    //check internet
+    public static boolean isConnected(Context context)
+    {
+        ConnectivityManager connectivityManager=(ConnectivityManager)context.getSystemService(Service.CONNECTIVITY_SERVICE);
+
+        if (connectivityManager!=null)
+        {
+            NetworkInfo info=connectivityManager.getActiveNetworkInfo();
+            if (info!=null)
+            {
+                if (info.getState()== NetworkInfo.State.CONNECTED)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }

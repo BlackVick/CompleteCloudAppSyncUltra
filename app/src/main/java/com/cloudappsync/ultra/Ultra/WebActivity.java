@@ -8,10 +8,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
@@ -30,10 +28,8 @@ import com.cloudappsync.ultra.Models.Domains;
 import com.cloudappsync.ultra.Models.FileHistory;
 import com.cloudappsync.ultra.Models.Schedule;
 import com.cloudappsync.ultra.R;
-import com.cloudappsync.ultra.Utilities.CheckInternet;
 import com.cloudappsync.ultra.Utilities.Database;
 import com.cloudappsync.ultra.Utilities.DownloadFromUrl;
-import com.cloudappsync.ultra.Receivers.NetworkReceiver;
 import com.cloudappsync.ultra.Utilities.Common;
 import com.cloudappsync.ultra.Interface.DownloadHelper;
 import com.cloudappsync.ultra.Utilities.Methods;
@@ -56,9 +52,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import io.paperdb.Paper;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -535,98 +528,65 @@ public class WebActivity extends AppCompatActivity {
     //internet check
     public void runFirstCheck(){
 
-        new CheckInternet(WebActivity.this, output -> {
+        if (Methods.isConnected(this)){
 
-            switch (output){
+            //internet available
+            Log.i("ConnectionStatus", "Now Online" + url);
 
-                case 1:
-                    //internet available
-                    Log.i("ConnectionStatus", "Now Online" + url);
+            //set values
+            isInternetAvailable = true;
 
-                    //set values
-                    isInternetAvailable = true;
+            //load online url
+            myWebView.loadUrl(url);
 
-                    //load online url
-                    myWebView.loadUrl(url);
+            //set indicator
+            if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
+                connectionIndicator.setImageResource(R.drawable.online);
+            }
+            testOnlineIndicator.setImageResource(R.drawable.online);
 
-                    //set indicator
-                    if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
-                        connectionIndicator.setImageResource(R.drawable.online);
-                    }
-                    testOnlineIndicator.setImageResource(R.drawable.online);
+            //sync
+            if (pageMode.equals(Common.PAGE_NO_SYNC_MODE)) {
 
-                    //sync
-                    if (pageMode.equals(Common.PAGE_NO_SYNC_MODE)) {
+                synchronizeAfterInterval();
 
-                        synchronizeAfterInterval();
+            } else if (pageMode.equals(Common.PAGE_NORMAL_MODE) || pageMode.equals(Common.PAGE_TEST_MODE)) {
 
-                    } else if (pageMode.equals(Common.PAGE_NORMAL_MODE) || pageMode.equals(Common.PAGE_TEST_MODE)) {
-
-                        syncFirstThenInterval();
-
-                    }
-
-                    //run continuous check
-                    runContinuousCheck();
-                    break;
-
-                case 0:
-                    //no internet
-                    Log.i("ConnectionStatus", "No Internet Connectivity: Loading Local");
-
-                    //set values
-                    isInternetAvailable = false;
-
-                    //load local page
-                    if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
-                        myWebView.loadUrl("file:///" + localWebDirectory.getAbsolutePath() + "/index.html");
-                    } else {
-                        myWebView.loadUrl(url);
-                    }
-
-                    //set indicator
-                    if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
-                        connectionIndicator.setImageResource(R.drawable.offline);
-                    }
-                    testOnlineIndicator.setImageResource(R.drawable.offline);
-
-                    //synchronization
-                    synchronizeAfterInterval();
-
-                    //run continuous check
-                    runContinuousCheck();
-                    break;
-
-                case 2:
-                    //no connectivity
-                    Log.i("ConnectionStatus", "No Connectivity Detected: Loading Local");
-
-                    //set values
-                    isInternetAvailable = false;
-
-                    //load local page
-                    if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
-                        myWebView.loadUrl("file:///" + localWebDirectory.getAbsolutePath() + "/index.html");
-                    } else {
-                        myWebView.loadUrl(url);
-                    }
-
-                    //set indicator
-                    if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
-                        connectionIndicator.setImageResource(R.drawable.offline);
-                    }
-                    testOnlineIndicator.setImageResource(R.drawable.offline);
-
-                    //synchronization
-                    synchronizeAfterInterval();
-
-                    //run continuous check
-                    runContinuousCheck();
-                    break;
+                syncFirstThenInterval();
 
             }
 
-        }).execute();
+            //run continuous check
+            runContinuousCheck();
+
+        } else {
+
+            //no connectivity
+            Log.i("ConnectionStatus", "No Connectivity Detected: Loading Local");
+
+            //set values
+            isInternetAvailable = false;
+
+            //load local page
+            if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
+                myWebView.loadUrl("file:///" + localWebDirectory.getAbsolutePath() + "/index.html");
+            } else {
+                myWebView.loadUrl(url);
+            }
+
+            //set indicator
+            if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
+                connectionIndicator.setImageResource(R.drawable.offline);
+            }
+            testOnlineIndicator.setImageResource(R.drawable.offline);
+
+            //synchronization
+            synchronizeAfterInterval();
+
+            //run continuous check
+            runContinuousCheck();
+
+        }
 
     }
 
@@ -638,138 +598,99 @@ public class WebActivity extends AppCompatActivity {
             public void run() {
                 new Handler(Looper.getMainLooper()).post(() -> {
 
-                    new CheckInternet(WebActivity.this, output -> {
+                    if (Methods.isConnected(WebActivity.this)){
 
-                        switch (output){
+                        //check for connectivity
+                        if (!isInternetAvailable) {
 
-                            case 1:
-                                //check for connectivity
-                                if (!isInternetAvailable) {
+                            //internet available
+                            Log.i("ConnectionStatus", "Now Online" + url);
 
-                                    //internet available
-                                    Log.i("ConnectionStatus", "Now Online" + url);
+                            //set values
+                            isInternetAvailable = true;
 
-                                    //set values
-                                    isInternetAvailable = true;
+                            //load online url
+                            myWebView.loadUrl(url);
 
-                                    //load online url
-                                    myWebView.loadUrl(url);
+                            //set indicator
+                            if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
+                                connectionIndicator.setImageResource(R.drawable.online);
+                            }
+                            testOnlineIndicator.setImageResource(R.drawable.online);
 
-                                    //set indicator
-                                    if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
-                                        connectionIndicator.setImageResource(R.drawable.online);
-                                    }
-                                    testOnlineIndicator.setImageResource(R.drawable.online);
+                            //sync
+                            if (hasSyncStarted && lostDuringSync){
 
-                                    //sync
-                                    if (hasSyncStarted && lostDuringSync){
+                                //set new state
+                                lostDuringSync = false;
 
-                                        //set new state
-                                        lostDuringSync = false;
-
-                                        //clear countdown
-                                        if (mCountDownTimer != null){
-                                            mCountDownTimer.cancel();
-                                        }
-
-                                        //restart sync
-                                        synchronizeAfterInterval();
-
-                                    }
-
-                                } else {
-
-                                    //sync
-                                    if (hasSyncStarted && lostDuringSync){
-
-                                        //set new state
-                                        lostDuringSync = false;
-
-                                        //clear countdown
-                                        if (mCountDownTimer != null){
-                                            mCountDownTimer.cancel();
-                                        }
-
-                                        //restart sync
-                                        synchronizeAfterInterval();
-
-                                    }
-
+                                //clear countdown
+                                if (mCountDownTimer != null){
+                                    mCountDownTimer.cancel();
                                 }
 
-                                //run continuous check
-                                runContinuousCheck();
-                                break;
+                                //restart sync
+                                synchronizeAfterInterval();
 
-                            case 0:
-                                //no internet
-                                if (isInternetAvailable) {
+                            }
 
-                                    Log.i("ConnectionStatus", "No Internet Connectivity: Loading Local");
+                        } else {
 
-                                    //set values
-                                    isInternetAvailable = false;
+                            //sync
+                            if (hasSyncStarted && lostDuringSync){
 
-                                    //load local page
-                                    if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
-                                        myWebView.loadUrl("file:///" + localWebDirectory.getAbsolutePath() + "/index.html");
-                                    } else {
-                                        myWebView.loadUrl(url);
-                                    }
+                                //set new state
+                                lostDuringSync = false;
 
-                                    //set indicator
-                                    if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
-                                        connectionIndicator.setImageResource(R.drawable.offline);
-                                    }
-                                    testOnlineIndicator.setImageResource(R.drawable.offline);
-
-                                    //sync
-                                    if (hasSyncStarted){
-                                        lostDuringSync = true;
-                                    }
-
+                                //clear countdown
+                                if (mCountDownTimer != null){
+                                    mCountDownTimer.cancel();
                                 }
 
-                                //run continuous check
-                                runContinuousCheck();
-                                break;
+                                //restart sync
+                                synchronizeAfterInterval();
 
-                            case 2:
-                                //no connectivity
-                                if (isInternetAvailable) {
-
-                                    Log.i("ConnectionStatus", "No Connectivity Detected: Loading Local");
-
-                                    //set values
-                                    isInternetAvailable = false;
-
-                                    //load local page
-                                    if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
-                                        myWebView.loadUrl("file:///" + localWebDirectory.getAbsolutePath() + "/index.html");
-                                    } else {
-                                        myWebView.loadUrl(url);
-                                    }
-
-                                    //set indicator
-                                    if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
-                                        connectionIndicator.setImageResource(R.drawable.offline);
-                                    }
-                                    testOnlineIndicator.setImageResource(R.drawable.offline);
-
-                                    //sync
-                                    if (hasSyncStarted){
-                                        lostDuringSync = true;
-                                    }
-
-                                }
-
-                                //run continuous check
-                                runContinuousCheck();
-                                break;
+                            }
 
                         }
 
-                    }).execute();
+                        //run continuous check
+                        runContinuousCheck();
+
+                    } else {
+
+                        //no connectivity
+                        if (isInternetAvailable) {
+
+                            Log.i("ConnectionStatus", "No Connectivity Detected: Loading Local");
+
+                            //set values
+                            isInternetAvailable = false;
+
+                            //load local page
+                            if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
+                                myWebView.loadUrl("file:///" + localWebDirectory.getAbsolutePath() + "/index.html");
+                            } else {
+                                myWebView.loadUrl(url);
+                            }
+
+                            //set indicator
+                            if (pageType.equals(Common.LOAD_FROM_ONLINE)) {
+                                connectionIndicator.setImageResource(R.drawable.offline);
+                            }
+                            testOnlineIndicator.setImageResource(R.drawable.offline);
+
+                            //sync
+                            if (hasSyncStarted){
+                                lostDuringSync = true;
+                            }
+
+                        }
+
+                        //run continuous check
+                        runContinuousCheck();
+
+                    }
 
                 });
             }
@@ -2865,7 +2786,7 @@ public class WebActivity extends AppCompatActivity {
 
             //unzip files
             ZipManager zipManager = new ZipManager();
-            zipManager.unzip(downloadFile.getAbsolutePath(), destinationFolder.getAbsolutePath(), false);
+            zipManager.unzip(downloadFile, destinationFolder, false);
 
             //set timer for extraction
             zipTimer = new Timer();
@@ -2892,7 +2813,7 @@ public class WebActivity extends AppCompatActivity {
 
                     });
                 }
-            }, 30000);
+            }, 25000);
 
         } else {
 
