@@ -438,405 +438,509 @@ public class PasswordCheckPage extends AppCompatActivity {
         });
 
         //test mode option
-        if (testMode.equals(Common.TEST_PERSISTENT)){
+        if (testMode != null) {
 
-            if (testStatus.equals(Common.YES)){
+            if (testMode.equals(Common.TEST_PERSISTENT)) {
 
-                //set text
-                testModeBtn.setText("APP MODE");
+                if (testStatus.equals(Common.YES)) {
 
-                //click
-                testModeBtn.setOnClickListener(v -> {
+                    //set text
+                    testModeBtn.setText("APP MODE");
 
-                    //check password
-                    if (!TextUtils.isEmpty(appPassword.getText().toString().trim())){
+                    //click
+                    testModeBtn.setOnClickListener(v -> {
 
-                        if (appPassword.getText().toString().trim().equals(savedPassword)){
+                        //check password
+                        if (!TextUtils.isEmpty(appPassword.getText().toString().trim())) {
 
-                            //register password entry
-                            Paper.book().write(Common.PASSWORD_STATUS, Common.PASSWORD_PROVIDED);
+                            if (appPassword.getText().toString().trim().equals(savedPassword)) {
 
-                            //cancel test mode
-                            Paper.book().write(Common.IS_IN_TEST_MODE, Common.NO);
+                                //register password entry
+                                Paper.book().write(Common.PASSWORD_STATUS, Common.PASSWORD_PROVIDED);
 
-                            //set text
-                            testModeBtn.setText("TEST MODE");
+                                //cancel test mode
+                                Paper.book().write(Common.IS_IN_TEST_MODE, Common.NO);
 
-                            //grant access
-                            passwordDialog.dismiss();
+                                //set text
+                                testModeBtn.setText("TEST MODE");
 
-                            if (Paper.book().read(Common.LOAD_STYLE) != null && Paper.book().read(Common.LOAD_STYLE).equals(Common.LOAD_FROM_ONLINE)){
+                                //grant access
+                                passwordDialog.dismiss();
 
-                                //build string
-                                String companyId = Paper.book().read(Common.COMPANY_ID);
-                                String licenceKey = Paper.book().read(Common.LICENCE_ID);
+                                if (Paper.book().read(Common.LOAD_STYLE) != null && Paper.book().read(Common.LOAD_STYLE).equals(Common.LOAD_FROM_ONLINE)) {
 
-                                //go to licence page
-                                String theUrl = null;
+                                    //build string
+                                    String companyId = Paper.book().read(Common.COMPANY_ID);
+                                    String licenceKey = Paper.book().read(Common.LICENCE_ID);
 
-                                if (Paper.book().read(Common.CUSTOM_ONLINE_LINK_STATUS, Common.CUSTOM_ONLINE_LINK_INACTIVE).equals(Common.CUSTOM_ONLINE_LINK_ACTIVE)){
-                                    theUrl = Paper.book().read(Common.CUSTOM_ONLINE_LINK);
+                                    //go to licence page
+                                    String theUrl = null;
+
+                                    if (Paper.book().read(Common.CUSTOM_ONLINE_LINK_STATUS, Common.CUSTOM_ONLINE_LINK_INACTIVE).equals(Common.CUSTOM_ONLINE_LINK_ACTIVE)) {
+                                        theUrl = Paper.book().read(Common.CUSTOM_ONLINE_LINK);
+                                    } else {
+                                        theUrl = Paper.book().read(Common.CURRENT_MASTER_DOMAIN) + "/" + companyId + "/" + licenceKey + "/App/Application/index.html";
+                                    }
+
+                                    //null
+                                    Intent webIntent = null;
+
+                                    //intent
+                                    if (Paper.book().read(Common.CURRENT_USER_TYPE, Common.USER_TYPE_BASIC).equals(Common.USER_TYPE_ULTRA)) {
+                                        webIntent = new Intent(this, WebActivity.class);
+                                    } else {
+                                        webIntent = new Intent(this, BasicWebActivity.class);
+                                    }
+                                    webIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    webIntent.putExtra(Common.WEB_PAGE_MODE, Common.PAGE_NORMAL_MODE);
+                                    webIntent.putExtra(Common.WEB_PAGE_TYPE, Common.LOAD_FROM_ONLINE);
+                                    webIntent.putExtra(Common.WEB_PAGE_INTENT, theUrl);
+                                    startActivity(webIntent);
+                                    this.overridePendingTransition(R.anim.slide_right, R.anim.slide_out_right);
+
                                 } else {
-                                    theUrl = Paper.book().read(Common.CURRENT_MASTER_DOMAIN) + "/" + companyId + "/" + licenceKey + "/App/Application/index.html";
-                                }
 
-                                //null
-                                Intent webIntent = null;
+                                    //build string
+                                    String companyId = Paper.book().read(Common.COMPANY_ID);
+                                    String licenceKey = Paper.book().read(Common.LICENCE_ID);
 
-                                //intent
-                                if (Paper.book().read(Common.CURRENT_USER_TYPE, Common.USER_TYPE_BASIC).equals(Common.USER_TYPE_ULTRA)) {
-                                    webIntent = new Intent(this, WebActivity.class);
-                                } else {
-                                    webIntent = new Intent(this, BasicWebActivity.class);
+                                    //go to licence page
+                                    File dir = new File(Environment.getExternalStorageDirectory(), Common.BASE_FOLDER_NAME);
+                                    File liDir = new File(dir.getAbsolutePath(), Common.LICENCED_FOLDER_NAME + "/" + companyId + "-" + licenceKey + "/" + Common.USER_WEBPAGE_FOLDER);
+
+                                    //null
+                                    Intent webIntent = null;
+
+                                    //intent
+                                    if (Paper.book().read(Common.CURRENT_USER_TYPE, Common.USER_TYPE_BASIC).equals(Common.USER_TYPE_ULTRA)) {
+                                        webIntent = new Intent(this, WebActivity.class);
+                                    } else {
+                                        webIntent = new Intent(this, BasicWebActivity.class);
+                                    }
+                                    webIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    webIntent.putExtra(Common.WEB_PAGE_MODE, Common.PAGE_NORMAL_MODE);
+                                    webIntent.putExtra(Common.WEB_PAGE_TYPE, Common.LOAD_FROM_LOCAL);
+                                    webIntent.putExtra(Common.WEB_PAGE_INTENT, "file:///" + liDir.getAbsolutePath() + "/index.html");
+                                    startActivity(webIntent);
+                                    this.overridePendingTransition(R.anim.slide_right, R.anim.slide_out_right);
+
                                 }
-                                webIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                webIntent.putExtra(Common.WEB_PAGE_MODE, Common.PAGE_NORMAL_MODE);
-                                webIntent.putExtra(Common.WEB_PAGE_TYPE, Common.LOAD_FROM_ONLINE);
-                                webIntent.putExtra(Common.WEB_PAGE_INTENT, theUrl);
-                                startActivity(webIntent);
-                                this.overridePendingTransition(R.anim.slide_right, R.anim.slide_out_right);
 
                             } else {
 
-                                //build string
-                                String companyId = Paper.book().read(Common.COMPANY_ID);
-                                String licenceKey = Paper.book().read(Common.LICENCE_ID);
-
-                                //go to licence page
-                                File dir = new File(Environment.getExternalStorageDirectory(), Common.BASE_FOLDER_NAME);
-                                File liDir = new File(dir.getAbsolutePath(), Common.LICENCED_FOLDER_NAME + "/" + companyId + "-" + licenceKey + "/" + Common.USER_WEBPAGE_FOLDER);
-
-                                //null
-                                Intent webIntent = null;
-
-                                //intent
-                                if (Paper.book().read(Common.CURRENT_USER_TYPE, Common.USER_TYPE_BASIC).equals(Common.USER_TYPE_ULTRA)) {
-                                    webIntent = new Intent(this, WebActivity.class);
-                                } else {
-                                    webIntent = new Intent(this, BasicWebActivity.class);
-                                }
-                                webIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                webIntent.putExtra(Common.WEB_PAGE_MODE, Common.PAGE_NORMAL_MODE);
-                                webIntent.putExtra(Common.WEB_PAGE_TYPE, Common.LOAD_FROM_LOCAL);
-                                webIntent.putExtra(Common.WEB_PAGE_INTENT, "file:///" + liDir.getAbsolutePath() + "/index.html");
-                                startActivity(webIntent);
-                                this.overridePendingTransition(R.anim.slide_right, R.anim.slide_out_right);
+                                Toast.makeText(this, "Wrong Password", Toast.LENGTH_SHORT).show();
 
                             }
 
                         } else {
 
-                            Toast.makeText(this, "Wrong Password", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Provide password", Toast.LENGTH_SHORT).show();
 
                         }
 
-                    } else {
+                    });
 
-                        Toast.makeText(this, "Provide password", Toast.LENGTH_SHORT).show();
+                } else {
 
-                    }
+                    //set text
+                    testModeBtn.setText("TEST MODE");
 
-                });
+                    //click
+                    testModeBtn.setOnClickListener(v -> {
+
+                        //check password
+                        if (!TextUtils.isEmpty(appPassword.getText().toString().trim())) {
+
+                            if (appPassword.getText().toString().trim().equals(savedPassword)) {
+
+                                //register password entry
+                                Paper.book().write(Common.PASSWORD_STATUS, Common.PASSWORD_PROVIDED);
+
+                                //cancel test mode
+                                Paper.book().write(Common.IS_IN_TEST_MODE, Common.YES);
+
+                                //set text
+                                testModeBtn.setText("APP MODE");
+
+                                //grant access
+                                passwordDialog.dismiss();
+
+                                if (Paper.book().read(Common.LOAD_STYLE) != null && Paper.book().read(Common.LOAD_STYLE).equals(Common.LOAD_FROM_ONLINE)) {
+
+                                    //build string
+                                    String companyId = Paper.book().read(Common.COMPANY_ID);
+                                    String licenceKey = Paper.book().read(Common.LICENCE_ID);
+
+                                    //go to licence page
+                                    String theUrl = null;
+
+                                    if (Paper.book().read(Common.CUSTOM_ONLINE_LINK_STATUS, Common.CUSTOM_ONLINE_LINK_INACTIVE).equals(Common.CUSTOM_ONLINE_LINK_ACTIVE)) {
+                                        theUrl = Paper.book().read(Common.CUSTOM_ONLINE_LINK);
+                                    } else {
+                                        theUrl = Paper.book().read(Common.CURRENT_MASTER_DOMAIN) + "/" + companyId + "/" + licenceKey + "/App/Application/index.html";
+                                    }
+
+                                    //null
+                                    Intent webIntent = null;
+
+                                    //intent
+                                    if (Paper.book().read(Common.CURRENT_USER_TYPE, Common.USER_TYPE_BASIC).equals(Common.USER_TYPE_ULTRA)) {
+                                        webIntent = new Intent(this, WebActivity.class);
+                                    } else {
+                                        webIntent = new Intent(this, BasicWebActivity.class);
+                                    }
+                                    webIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    webIntent.putExtra(Common.WEB_PAGE_MODE, Common.PAGE_TEST_MODE);
+                                    webIntent.putExtra(Common.WEB_PAGE_TYPE, Common.LOAD_FROM_ONLINE);
+                                    webIntent.putExtra(Common.WEB_PAGE_INTENT, theUrl);
+                                    startActivity(webIntent);
+                                    this.overridePendingTransition(R.anim.slide_right, R.anim.slide_out_right);
+
+                                } else {
+
+                                    //build string
+                                    String companyId = Paper.book().read(Common.COMPANY_ID);
+                                    String licenceKey = Paper.book().read(Common.LICENCE_ID);
+
+                                    //go to licence page
+                                    File dir = new File(Environment.getExternalStorageDirectory(), Common.BASE_FOLDER_NAME);
+                                    File liDir = new File(dir.getAbsolutePath(), Common.LICENCED_FOLDER_NAME + "/" + companyId + "-" + licenceKey + "/" + Common.USER_WEBPAGE_FOLDER);
+
+                                    //null
+                                    Intent webIntent = null;
+
+                                    //intent
+                                    if (Paper.book().read(Common.CURRENT_USER_TYPE, Common.USER_TYPE_BASIC).equals(Common.USER_TYPE_ULTRA)) {
+                                        webIntent = new Intent(this, WebActivity.class);
+                                    } else {
+                                        webIntent = new Intent(this, BasicWebActivity.class);
+                                    }
+                                    webIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    webIntent.putExtra(Common.WEB_PAGE_MODE, Common.PAGE_TEST_MODE);
+                                    webIntent.putExtra(Common.WEB_PAGE_TYPE, Common.LOAD_FROM_LOCAL);
+                                    webIntent.putExtra(Common.WEB_PAGE_INTENT, "file:///" + liDir.getAbsolutePath() + "/index.html");
+                                    startActivity(webIntent);
+                                    this.overridePendingTransition(R.anim.slide_right, R.anim.slide_out_right);
+
+                                }
+
+                            } else {
+
+                                Toast.makeText(this, "Wrong Password", Toast.LENGTH_SHORT).show();
+
+                            }
+
+                        } else {
+
+                            Toast.makeText(this, "Provide password", Toast.LENGTH_SHORT).show();
+
+                        }
+
+                    });
+
+                }
 
             } else {
 
-                //set text
-                testModeBtn.setText("TEST MODE");
+                if (testStatus.equals(Common.YES)) {
 
-                //click
-                testModeBtn.setOnClickListener(v -> {
+                    //set text
+                    testModeBtn.setText("APP MODE");
 
-                    //check password
-                    if (!TextUtils.isEmpty(appPassword.getText().toString().trim())){
+                    //click
+                    testModeBtn.setOnClickListener(v -> {
 
-                        if (appPassword.getText().toString().trim().equals(savedPassword)){
+                        //check password
+                        if (!TextUtils.isEmpty(appPassword.getText().toString().trim())) {
 
-                            //register password entry
-                            Paper.book().write(Common.PASSWORD_STATUS, Common.PASSWORD_PROVIDED);
+                            if (appPassword.getText().toString().trim().equals(savedPassword)) {
 
-                            //cancel test mode
-                            Paper.book().write(Common.IS_IN_TEST_MODE, Common.YES);
+                                //register password entry
+                                Paper.book().write(Common.PASSWORD_STATUS, Common.PASSWORD_PROVIDED);
 
-                            //set text
-                            testModeBtn.setText("APP MODE");
+                                //cancel test mode
+                                Paper.book().write(Common.IS_IN_TEST_MODE, Common.NO);
 
-                            //grant access
-                            passwordDialog.dismiss();
+                                //set text
+                                testModeBtn.setText("TEST MODE");
 
-                            if (Paper.book().read(Common.LOAD_STYLE) != null && Paper.book().read(Common.LOAD_STYLE).equals(Common.LOAD_FROM_ONLINE)){
+                                //grant access
+                                passwordDialog.dismiss();
 
-                                //build string
-                                String companyId = Paper.book().read(Common.COMPANY_ID);
-                                String licenceKey = Paper.book().read(Common.LICENCE_ID);
+                                if (Paper.book().read(Common.LOAD_STYLE) != null && Paper.book().read(Common.LOAD_STYLE).equals(Common.LOAD_FROM_ONLINE)) {
 
-                                //go to licence page
-                                String theUrl = null;
+                                    //build string
+                                    String companyId = Paper.book().read(Common.COMPANY_ID);
+                                    String licenceKey = Paper.book().read(Common.LICENCE_ID);
 
-                                if (Paper.book().read(Common.CUSTOM_ONLINE_LINK_STATUS, Common.CUSTOM_ONLINE_LINK_INACTIVE).equals(Common.CUSTOM_ONLINE_LINK_ACTIVE)){
-                                    theUrl = Paper.book().read(Common.CUSTOM_ONLINE_LINK);
+                                    //go to licence page
+                                    String theUrl = null;
+
+                                    if (Paper.book().read(Common.CUSTOM_ONLINE_LINK_STATUS, Common.CUSTOM_ONLINE_LINK_INACTIVE).equals(Common.CUSTOM_ONLINE_LINK_ACTIVE)) {
+                                        theUrl = Paper.book().read(Common.CUSTOM_ONLINE_LINK);
+                                    } else {
+                                        theUrl = Paper.book().read(Common.CURRENT_MASTER_DOMAIN) + "/" + companyId + "/" + licenceKey + "/App/Application/index.html";
+                                    }
+
+                                    //null
+                                    Intent webIntent = null;
+
+                                    //intent
+                                    if (Paper.book().read(Common.CURRENT_USER_TYPE, Common.USER_TYPE_BASIC).equals(Common.USER_TYPE_ULTRA)) {
+                                        webIntent = new Intent(this, WebActivity.class);
+                                    } else {
+                                        webIntent = new Intent(this, BasicWebActivity.class);
+                                    }
+                                    webIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    webIntent.putExtra(Common.WEB_PAGE_MODE, Common.PAGE_NORMAL_MODE);
+                                    webIntent.putExtra(Common.WEB_PAGE_TYPE, Common.LOAD_FROM_ONLINE);
+                                    webIntent.putExtra(Common.WEB_PAGE_INTENT, theUrl);
+                                    startActivity(webIntent);
+                                    this.overridePendingTransition(R.anim.slide_right, R.anim.slide_out_right);
+
                                 } else {
-                                    theUrl = Paper.book().read(Common.CURRENT_MASTER_DOMAIN) + "/" + companyId + "/" + licenceKey + "/App/Application/index.html";
-                                }
 
-                                //null
-                                Intent webIntent = null;
+                                    //build string
+                                    String companyId = Paper.book().read(Common.COMPANY_ID);
+                                    String licenceKey = Paper.book().read(Common.LICENCE_ID);
 
-                                //intent
-                                if (Paper.book().read(Common.CURRENT_USER_TYPE, Common.USER_TYPE_BASIC).equals(Common.USER_TYPE_ULTRA)) {
-                                    webIntent = new Intent(this, WebActivity.class);
-                                } else {
-                                    webIntent = new Intent(this, BasicWebActivity.class);
+                                    //go to licence page
+                                    File dir = new File(Environment.getExternalStorageDirectory(), Common.BASE_FOLDER_NAME);
+                                    File liDir = new File(dir.getAbsolutePath(), Common.LICENCED_FOLDER_NAME + "/" + companyId + "-" + licenceKey + "/" + Common.USER_WEBPAGE_FOLDER);
+
+                                    //null
+                                    Intent webIntent = null;
+
+                                    //intent
+                                    if (Paper.book().read(Common.CURRENT_USER_TYPE, Common.USER_TYPE_BASIC).equals(Common.USER_TYPE_ULTRA)) {
+                                        webIntent = new Intent(this, WebActivity.class);
+                                    } else {
+                                        webIntent = new Intent(this, BasicWebActivity.class);
+                                    }
+                                    webIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    webIntent.putExtra(Common.WEB_PAGE_MODE, Common.PAGE_NORMAL_MODE);
+                                    webIntent.putExtra(Common.WEB_PAGE_TYPE, Common.LOAD_FROM_LOCAL);
+                                    webIntent.putExtra(Common.WEB_PAGE_INTENT, "file:///" + liDir.getAbsolutePath() + "/index.html");
+                                    startActivity(webIntent);
+                                    this.overridePendingTransition(R.anim.slide_right, R.anim.slide_out_right);
+
                                 }
-                                webIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                webIntent.putExtra(Common.WEB_PAGE_MODE, Common.PAGE_TEST_MODE);
-                                webIntent.putExtra(Common.WEB_PAGE_TYPE, Common.LOAD_FROM_ONLINE);
-                                webIntent.putExtra(Common.WEB_PAGE_INTENT, theUrl);
-                                startActivity(webIntent);
-                                this.overridePendingTransition(R.anim.slide_right, R.anim.slide_out_right);
 
                             } else {
 
-                                //build string
-                                String companyId = Paper.book().read(Common.COMPANY_ID);
-                                String licenceKey = Paper.book().read(Common.LICENCE_ID);
-
-                                //go to licence page
-                                File dir = new File(Environment.getExternalStorageDirectory(), Common.BASE_FOLDER_NAME);
-                                File liDir = new File(dir.getAbsolutePath(), Common.LICENCED_FOLDER_NAME + "/" + companyId + "-" + licenceKey + "/" + Common.USER_WEBPAGE_FOLDER);
-
-                                //null
-                                Intent webIntent = null;
-
-                                //intent
-                                if (Paper.book().read(Common.CURRENT_USER_TYPE, Common.USER_TYPE_BASIC).equals(Common.USER_TYPE_ULTRA)) {
-                                    webIntent = new Intent(this, WebActivity.class);
-                                } else {
-                                    webIntent = new Intent(this, BasicWebActivity.class);
-                                }
-                                webIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                webIntent.putExtra(Common.WEB_PAGE_MODE, Common.PAGE_TEST_MODE);
-                                webIntent.putExtra(Common.WEB_PAGE_TYPE, Common.LOAD_FROM_LOCAL);
-                                webIntent.putExtra(Common.WEB_PAGE_INTENT, "file:///" + liDir.getAbsolutePath() + "/index.html");
-                                startActivity(webIntent);
-                                this.overridePendingTransition(R.anim.slide_right, R.anim.slide_out_right);
+                                Toast.makeText(this, "Wrong Password", Toast.LENGTH_SHORT).show();
 
                             }
 
                         } else {
 
-                            Toast.makeText(this, "Wrong Password", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Provide password", Toast.LENGTH_SHORT).show();
 
                         }
 
-                    } else {
+                    });
 
-                        Toast.makeText(this, "Provide password", Toast.LENGTH_SHORT).show();
+                } else {
 
-                    }
+                    //set text
+                    testModeBtn.setText("TEST MODE");
 
-                });
+                    //click
+                    testModeBtn.setOnClickListener(v -> {
+
+                        //check password
+                        if (!TextUtils.isEmpty(appPassword.getText().toString().trim())) {
+
+                            if (appPassword.getText().toString().trim().equals(savedPassword)) {
+
+                                //register password entry
+                                Paper.book().write(Common.PASSWORD_STATUS, Common.PASSWORD_PROVIDED);
+
+                                //cancel test mode
+                                Paper.book().write(Common.IS_IN_TEST_MODE, Common.YES);
+
+                                //set text
+                                testModeBtn.setText("APP MODE");
+
+                                //grant access
+                                passwordDialog.dismiss();
+
+                                if (Paper.book().read(Common.LOAD_STYLE) != null && Paper.book().read(Common.LOAD_STYLE).equals(Common.LOAD_FROM_ONLINE)) {
+
+                                    //build string
+                                    String companyId = Paper.book().read(Common.COMPANY_ID);
+                                    String licenceKey = Paper.book().read(Common.LICENCE_ID);
+
+                                    //go to licence page
+                                    String theUrl = null;
+
+                                    if (Paper.book().read(Common.CUSTOM_ONLINE_LINK_STATUS, Common.CUSTOM_ONLINE_LINK_INACTIVE).equals(Common.CUSTOM_ONLINE_LINK_ACTIVE)) {
+                                        theUrl = Paper.book().read(Common.CUSTOM_ONLINE_LINK);
+                                    } else {
+                                        theUrl = Paper.book().read(Common.CURRENT_MASTER_DOMAIN) + "/" + companyId + "/" + licenceKey + "/App/Application/index.html";
+                                    }
+
+                                    //null
+                                    Intent webIntent = null;
+
+                                    //intent
+                                    if (Paper.book().read(Common.CURRENT_USER_TYPE, Common.USER_TYPE_BASIC).equals(Common.USER_TYPE_ULTRA)) {
+                                        webIntent = new Intent(this, WebActivity.class);
+                                    } else {
+                                        webIntent = new Intent(this, BasicWebActivity.class);
+                                    }
+                                    webIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    webIntent.putExtra(Common.WEB_PAGE_MODE, Common.PAGE_TEST_MODE);
+                                    webIntent.putExtra(Common.WEB_PAGE_TYPE, Common.LOAD_FROM_ONLINE);
+                                    webIntent.putExtra(Common.WEB_PAGE_INTENT, theUrl);
+                                    startActivity(webIntent);
+                                    this.overridePendingTransition(R.anim.slide_right, R.anim.slide_out_right);
+
+                                } else {
+
+                                    //build string
+                                    String companyId = Paper.book().read(Common.COMPANY_ID);
+                                    String licenceKey = Paper.book().read(Common.LICENCE_ID);
+
+                                    //go to licence page
+                                    File dir = new File(Environment.getExternalStorageDirectory(), Common.BASE_FOLDER_NAME);
+                                    File liDir = new File(dir.getAbsolutePath(), Common.LICENCED_FOLDER_NAME + "/" + companyId + "-" + licenceKey + "/" + Common.USER_WEBPAGE_FOLDER);
+
+                                    //null
+                                    Intent webIntent = null;
+
+                                    //intent
+                                    if (Paper.book().read(Common.CURRENT_USER_TYPE, Common.USER_TYPE_BASIC).equals(Common.USER_TYPE_ULTRA)) {
+                                        webIntent = new Intent(this, WebActivity.class);
+                                    } else {
+                                        webIntent = new Intent(this, BasicWebActivity.class);
+                                    }
+                                    webIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    webIntent.putExtra(Common.WEB_PAGE_MODE, Common.PAGE_TEST_MODE);
+                                    webIntent.putExtra(Common.WEB_PAGE_TYPE, Common.LOAD_FROM_LOCAL);
+                                    webIntent.putExtra(Common.WEB_PAGE_INTENT, "file:///" + liDir.getAbsolutePath() + "/index.html");
+                                    startActivity(webIntent);
+                                    this.overridePendingTransition(R.anim.slide_right, R.anim.slide_out_right);
+
+                                }
+
+                            } else {
+
+                                Toast.makeText(this, "Wrong Password", Toast.LENGTH_SHORT).show();
+
+                            }
+
+                        } else {
+
+                            Toast.makeText(this, "Provide password", Toast.LENGTH_SHORT).show();
+
+                        }
+
+                    });
+
+                }
 
             }
 
         } else {
 
-            if (testStatus.equals(Common.YES)){
+            Paper.book().write(Common.CURRENT_TEST_MODE, Common.TEST_ONE_OFF);
 
-                //set text
-                testModeBtn.setText("APP MODE");
+            //set text
+            testModeBtn.setText("TEST MODE");
 
-                //click
-                testModeBtn.setOnClickListener(v -> {
+            //click
+            testModeBtn.setOnClickListener(v -> {
 
-                    //check password
-                    if (!TextUtils.isEmpty(appPassword.getText().toString().trim())){
+                //check password
+                if (!TextUtils.isEmpty(appPassword.getText().toString().trim())) {
 
-                        if (appPassword.getText().toString().trim().equals(savedPassword)){
+                    if (appPassword.getText().toString().trim().equals(savedPassword)) {
 
-                            //register password entry
-                            Paper.book().write(Common.PASSWORD_STATUS, Common.PASSWORD_PROVIDED);
+                        //register password entry
+                        Paper.book().write(Common.PASSWORD_STATUS, Common.PASSWORD_PROVIDED);
 
-                            //cancel test mode
-                            Paper.book().write(Common.IS_IN_TEST_MODE, Common.NO);
+                        //cancel test mode
+                        Paper.book().write(Common.IS_IN_TEST_MODE, Common.YES);
 
-                            //set text
-                            testModeBtn.setText("TEST MODE");
+                        //set text
+                        testModeBtn.setText("APP MODE");
 
-                            //grant access
-                            passwordDialog.dismiss();
+                        //grant access
+                        passwordDialog.dismiss();
 
-                            if (Paper.book().read(Common.LOAD_STYLE) != null && Paper.book().read(Common.LOAD_STYLE).equals(Common.LOAD_FROM_ONLINE)){
+                        if (Paper.book().read(Common.LOAD_STYLE) != null && Paper.book().read(Common.LOAD_STYLE).equals(Common.LOAD_FROM_ONLINE)) {
 
-                                //build string
-                                String companyId = Paper.book().read(Common.COMPANY_ID);
-                                String licenceKey = Paper.book().read(Common.LICENCE_ID);
+                            //build string
+                            String companyId = Paper.book().read(Common.COMPANY_ID);
+                            String licenceKey = Paper.book().read(Common.LICENCE_ID);
 
-                                //go to licence page
-                                String theUrl = null;
+                            //go to licence page
+                            String theUrl = null;
 
-                                if (Paper.book().read(Common.CUSTOM_ONLINE_LINK_STATUS, Common.CUSTOM_ONLINE_LINK_INACTIVE).equals(Common.CUSTOM_ONLINE_LINK_ACTIVE)){
-                                    theUrl = Paper.book().read(Common.CUSTOM_ONLINE_LINK);
-                                } else {
-                                    theUrl = Paper.book().read(Common.CURRENT_MASTER_DOMAIN) + "/" + companyId + "/" + licenceKey + "/App/Application/index.html";
-                                }
-
-                                //null
-                                Intent webIntent = null;
-
-                                //intent
-                                if (Paper.book().read(Common.CURRENT_USER_TYPE, Common.USER_TYPE_BASIC).equals(Common.USER_TYPE_ULTRA)) {
-                                    webIntent = new Intent(this, WebActivity.class);
-                                } else {
-                                    webIntent = new Intent(this, BasicWebActivity.class);
-                                }
-                                webIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                webIntent.putExtra(Common.WEB_PAGE_MODE, Common.PAGE_NORMAL_MODE);
-                                webIntent.putExtra(Common.WEB_PAGE_TYPE, Common.LOAD_FROM_ONLINE);
-                                webIntent.putExtra(Common.WEB_PAGE_INTENT, theUrl);
-                                startActivity(webIntent);
-                                this.overridePendingTransition(R.anim.slide_right, R.anim.slide_out_right);
-
+                            if (Paper.book().read(Common.CUSTOM_ONLINE_LINK_STATUS, Common.CUSTOM_ONLINE_LINK_INACTIVE).equals(Common.CUSTOM_ONLINE_LINK_ACTIVE)) {
+                                theUrl = Paper.book().read(Common.CUSTOM_ONLINE_LINK);
                             } else {
-
-                                //build string
-                                String companyId = Paper.book().read(Common.COMPANY_ID);
-                                String licenceKey = Paper.book().read(Common.LICENCE_ID);
-
-                                //go to licence page
-                                File dir = new File(Environment.getExternalStorageDirectory(), Common.BASE_FOLDER_NAME);
-                                File liDir = new File(dir.getAbsolutePath(), Common.LICENCED_FOLDER_NAME + "/" + companyId + "-" + licenceKey + "/" + Common.USER_WEBPAGE_FOLDER);
-
-                                //null
-                                Intent webIntent = null;
-
-                                //intent
-                                if (Paper.book().read(Common.CURRENT_USER_TYPE, Common.USER_TYPE_BASIC).equals(Common.USER_TYPE_ULTRA)) {
-                                    webIntent = new Intent(this, WebActivity.class);
-                                } else {
-                                    webIntent = new Intent(this, BasicWebActivity.class);
-                                }
-                                webIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                webIntent.putExtra(Common.WEB_PAGE_MODE, Common.PAGE_NORMAL_MODE);
-                                webIntent.putExtra(Common.WEB_PAGE_TYPE, Common.LOAD_FROM_LOCAL);
-                                webIntent.putExtra(Common.WEB_PAGE_INTENT, "file:///" + liDir.getAbsolutePath() + "/index.html");
-                                startActivity(webIntent);
-                                this.overridePendingTransition(R.anim.slide_right, R.anim.slide_out_right);
-
+                                theUrl = Paper.book().read(Common.CURRENT_MASTER_DOMAIN) + "/" + companyId + "/" + licenceKey + "/App/Application/index.html";
                             }
+
+                            //null
+                            Intent webIntent = null;
+
+                            //intent
+                            if (Paper.book().read(Common.CURRENT_USER_TYPE, Common.USER_TYPE_BASIC).equals(Common.USER_TYPE_ULTRA)) {
+                                webIntent = new Intent(this, WebActivity.class);
+                            } else {
+                                webIntent = new Intent(this, BasicWebActivity.class);
+                            }
+                            webIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            webIntent.putExtra(Common.WEB_PAGE_MODE, Common.PAGE_TEST_MODE);
+                            webIntent.putExtra(Common.WEB_PAGE_TYPE, Common.LOAD_FROM_ONLINE);
+                            webIntent.putExtra(Common.WEB_PAGE_INTENT, theUrl);
+                            startActivity(webIntent);
+                            this.overridePendingTransition(R.anim.slide_right, R.anim.slide_out_right);
 
                         } else {
 
-                            Toast.makeText(this, "Wrong Password", Toast.LENGTH_SHORT).show();
+                            //build string
+                            String companyId = Paper.book().read(Common.COMPANY_ID);
+                            String licenceKey = Paper.book().read(Common.LICENCE_ID);
+
+                            //go to licence page
+                            File dir = new File(Environment.getExternalStorageDirectory(), Common.BASE_FOLDER_NAME);
+                            File liDir = new File(dir.getAbsolutePath(), Common.LICENCED_FOLDER_NAME + "/" + companyId + "-" + licenceKey + "/" + Common.USER_WEBPAGE_FOLDER);
+
+                            //null
+                            Intent webIntent = null;
+
+                            //intent
+                            if (Paper.book().read(Common.CURRENT_USER_TYPE, Common.USER_TYPE_BASIC).equals(Common.USER_TYPE_ULTRA)) {
+                                webIntent = new Intent(this, WebActivity.class);
+                            } else {
+                                webIntent = new Intent(this, BasicWebActivity.class);
+                            }
+                            webIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            webIntent.putExtra(Common.WEB_PAGE_MODE, Common.PAGE_TEST_MODE);
+                            webIntent.putExtra(Common.WEB_PAGE_TYPE, Common.LOAD_FROM_LOCAL);
+                            webIntent.putExtra(Common.WEB_PAGE_INTENT, "file:///" + liDir.getAbsolutePath() + "/index.html");
+                            startActivity(webIntent);
+                            this.overridePendingTransition(R.anim.slide_right, R.anim.slide_out_right);
 
                         }
 
                     } else {
 
-                        Toast.makeText(this, "Provide password", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Wrong Password", Toast.LENGTH_SHORT).show();
 
                     }
 
-                });
+                } else {
 
-            } else {
+                    Toast.makeText(this, "Provide password", Toast.LENGTH_SHORT).show();
 
-                //set text
-                testModeBtn.setText("TEST MODE");
+                }
 
-                //click
-                testModeBtn.setOnClickListener(v -> {
-
-                    //check password
-                    if (!TextUtils.isEmpty(appPassword.getText().toString().trim())){
-
-                        if (appPassword.getText().toString().trim().equals(savedPassword)){
-
-                            //register password entry
-                            Paper.book().write(Common.PASSWORD_STATUS, Common.PASSWORD_PROVIDED);
-
-                            //cancel test mode
-                            Paper.book().write(Common.IS_IN_TEST_MODE, Common.YES);
-
-                            //set text
-                            testModeBtn.setText("APP MODE");
-
-                            //grant access
-                            passwordDialog.dismiss();
-
-                            if (Paper.book().read(Common.LOAD_STYLE) != null && Paper.book().read(Common.LOAD_STYLE).equals(Common.LOAD_FROM_ONLINE)){
-
-                                //build string
-                                String companyId = Paper.book().read(Common.COMPANY_ID);
-                                String licenceKey = Paper.book().read(Common.LICENCE_ID);
-
-                                //go to licence page
-                                String theUrl = null;
-
-                                if (Paper.book().read(Common.CUSTOM_ONLINE_LINK_STATUS, Common.CUSTOM_ONLINE_LINK_INACTIVE).equals(Common.CUSTOM_ONLINE_LINK_ACTIVE)){
-                                    theUrl = Paper.book().read(Common.CUSTOM_ONLINE_LINK);
-                                } else {
-                                    theUrl = Paper.book().read(Common.CURRENT_MASTER_DOMAIN) + "/" + companyId + "/" + licenceKey + "/App/Application/index.html";
-                                }
-
-                                //null
-                                Intent webIntent = null;
-
-                                //intent
-                                if (Paper.book().read(Common.CURRENT_USER_TYPE, Common.USER_TYPE_BASIC).equals(Common.USER_TYPE_ULTRA)) {
-                                    webIntent = new Intent(this, WebActivity.class);
-                                } else {
-                                    webIntent = new Intent(this, BasicWebActivity.class);
-                                }
-                                webIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                webIntent.putExtra(Common.WEB_PAGE_MODE, Common.PAGE_TEST_MODE);
-                                webIntent.putExtra(Common.WEB_PAGE_TYPE, Common.LOAD_FROM_ONLINE);
-                                webIntent.putExtra(Common.WEB_PAGE_INTENT, theUrl);
-                                startActivity(webIntent);
-                                this.overridePendingTransition(R.anim.slide_right, R.anim.slide_out_right);
-
-                            } else {
-
-                                //build string
-                                String companyId = Paper.book().read(Common.COMPANY_ID);
-                                String licenceKey = Paper.book().read(Common.LICENCE_ID);
-
-                                //go to licence page
-                                File dir = new File(Environment.getExternalStorageDirectory(), Common.BASE_FOLDER_NAME);
-                                File liDir = new File(dir.getAbsolutePath(), Common.LICENCED_FOLDER_NAME + "/" + companyId + "-" + licenceKey + "/" + Common.USER_WEBPAGE_FOLDER);
-
-                                //null
-                                Intent webIntent = null;
-
-                                //intent
-                                if (Paper.book().read(Common.CURRENT_USER_TYPE, Common.USER_TYPE_BASIC).equals(Common.USER_TYPE_ULTRA)) {
-                                    webIntent = new Intent(this, WebActivity.class);
-                                } else {
-                                    webIntent = new Intent(this, BasicWebActivity.class);
-                                }
-                                webIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                webIntent.putExtra(Common.WEB_PAGE_MODE, Common.PAGE_TEST_MODE);
-                                webIntent.putExtra(Common.WEB_PAGE_TYPE, Common.LOAD_FROM_LOCAL);
-                                webIntent.putExtra(Common.WEB_PAGE_INTENT, "file:///" + liDir.getAbsolutePath() + "/index.html");
-                                startActivity(webIntent);
-                                this.overridePendingTransition(R.anim.slide_right, R.anim.slide_out_right);
-
-                            }
-
-                        } else {
-
-                            Toast.makeText(this, "Wrong Password", Toast.LENGTH_SHORT).show();
-
-                        }
-
-                    } else {
-
-                        Toast.makeText(this, "Provide password", Toast.LENGTH_SHORT).show();
-
-                    }
-
-                });
-
-            }
+            });
 
         }
 
@@ -890,7 +994,9 @@ public class PasswordCheckPage extends AppCompatActivity {
     private void resync() {
 
         //clean database
-        new Database(this).cleanFileHistory(Paper.book().read(Common.CURRENT_DB_LICENCE));
+        if (Paper.book().read(Common.CURRENT_DB_LICENCE) != null) {
+            new Database(this).cleanFileHistory(Paper.book().read(Common.CURRENT_DB_LICENCE));
+        }
 
 
         //clear local database

@@ -1975,7 +1975,9 @@ public class SignInBasic extends AppCompatActivity {
                 }
 
                 //hide loading
-                alertDialog.dismiss();
+                if (alertDialog != null && alertDialog.isShowing()) {
+                    alertDialog.dismiss();
+                }
 
                 if (!isCancel) {
 
@@ -2406,7 +2408,9 @@ public class SignInBasic extends AppCompatActivity {
                 SignInBasic.this.runOnUiThread(() -> {
 
                     //hide loading
-                    alertDialog.dismiss();
+                    if (alertDialog != null && alertDialog.isShowing()) {
+                        alertDialog.dismiss();
+                    }
 
                     if (!isCancel) {
 
